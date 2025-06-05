@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Book a Trip - NaiSmart</title>
-  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
 
@@ -19,6 +19,58 @@
       </ul>
     </nav>
   </header>
+<style>
+    .booking-section {
+  padding: 4rem 2rem;
+  background-color: #f0f0f0;
+  display: flex;
+  justify-content: center;
+}
+
+.booking-box {
+  background: white;
+  padding: 3rem;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.booking-box h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #004d40;
+}
+
+.booking-box label {
+  display: block;
+  margin-top: 1rem;
+  font-weight: 500;
+}
+.booking-section {
+  padding: 4rem 2rem;
+  background: linear-gradient(rgba(0, 77, 64, 0.8), rgba(0, 77, 64, 0.8)),
+              url('../images/matatu-bg.jpg') no-repeat center center/cover;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.booking-box input,
+.booking-box select {
+  width: 100%;
+  padding: 0.7rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-top: 0.3rem;
+}
+
+.booking-box .btn {
+  width: 100%;
+  margin-top: 2rem;
+}
+
+</style>
   <section class="booking-section">
     <div class="booking-box">
       <h2>Book Your Trip</h2>

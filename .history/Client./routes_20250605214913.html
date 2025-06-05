@@ -19,6 +19,84 @@
       </ul>
     </nav>
   </header>
+
+  <style>
+    .navbar {
+  background-color: #004d40;
+  padding: 1rem 2rem;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.logo a {
+  color: #ffffff;
+  font-size: 1.5rem;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+}
+
+.nav-links li a {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.nav-links li a:hover {
+  text-decoration: underline;
+}
+    .routes-section {
+  padding: 4rem 2rem;
+  background-color: #f1f8f6;
+  color: #004d40;
+  text-align: center;
+}
+
+.routes-section h2 {
+  font-size: 2.2rem;
+  margin-bottom: 2rem;
+  color: #004d40;
+}
+
+.route-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.route-card {
+  background-color: #ffffff;
+  border-left: 4px solid #00bfa5;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  transition: 0.3s ease;
+}
+
+.route-card:hover {
+  transform: translateY(-5px);
+  background-color: #e0f2f1;
+}
+
+.route-card h3 {
+  color: #00695c;
+  margin-bottom: 1rem;
+}
+
+  </style>
   <section class="routes-section">
     <h2>Available Routes</h2>
     <div class="route-cards">
