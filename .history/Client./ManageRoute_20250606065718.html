@@ -31,93 +31,7 @@
   </aside>
 
   <style>
-  /* Layout reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Segoe UI', sans-serif;
-}
-
-/* Main layout */
-body {
-  min-height: 100vh;
-  background-color: #f5f5f5;
-}
-
-/* Header */
-.admin-header {
-  position: fixed;
-  top: 0;
-  left: 200px;
-  right: 0;
-  height: 60px;
-  background-color: #004d40;
-  color: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 2rem;
-  z-index: 1000;
-}
-
-.admin-profile a {
-  color: #ffffff;
-  margin-left: 1rem;
-  text-decoration: none;
-}
-
-/* Sidebar */
-.admin-sidebar {
-  background-color: #00695c;
-  padding-top: 60px;
-  height: 100vh;
-  width: 200px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  overflow-y: auto;
-}
-
-.admin-sidebar ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.admin-sidebar ul li a {
-  display: block;
-  padding: 1rem;
-  font-size: 1rem;
-  line-height: 1.5;
-  color: white;
-  text-decoration: none;
-  transition: background-color 0.3s;
-}
-
-.admin-sidebar ul li a:hover,
-.admin-sidebar ul li a.active {
-  background-color: #004d40;
-  font-weight: bold;
-}
-
-/* Main content area */
-.admin-main {
-  margin-left: 200px;
-  margin-top: 60px;
-  padding: 2rem;
-}
-
-/* Section styling */
-.admin-section {
-  background: white;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-}
-
-/* Buttons */
-.add-btn {
+    .add-btn {
   background-color: #00bfa5;
   color: white;
   padding: 0.6rem 1.2rem;
@@ -127,28 +41,38 @@ body {
   margin-bottom: 1rem;
 }
 
-.edit-btn, .delete-btn {
-  padding: 0.4rem 0.8rem;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-right: 0.5rem; /* This gives nice spacing between buttons */
-}
+.admin-sidebar {
+      background-color: #00695c;
+      padding-top: 60px;
+      height: 100vh;
+      width: 200px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      overflow-y: auto;
+    }
 
-.edit-btn {
-  background-color: #42a5f5;
-  color: white;
-}
+    .admin-sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
 
-.delete-btn {
-  background-color: #ef5350;
-  color: white;
-}
+    .admin-sidebar ul li a {
+      display: block;
+      padding: 1rem;
+      color: white;
+      text-decoration: none;
+      transition: background-color 0.3s;
+    }
 
-
-/* Forms */
-form#addRouteForm,
-form#addFleetForm {
+    .admin-sidebar ul li a:hover,
+    .admin-sidebar ul li a.active {
+      background-color: #004d40;
+      font-weight: bold;
+    }
+    
+form#addRouteForm {
   background: #f1f8f6;
   padding: 1.5rem;
   border-radius: 8px;
@@ -165,7 +89,6 @@ form input, form select {
   font-size: 1rem;
 }
 
-/* Tables */
 .route-table {
   width: 100%;
   border-collapse: collapse;
@@ -185,7 +108,6 @@ form input, form select {
   color: white;
 }
 
-/* Status Badge */
 .badge.active {
   background-color: #00bfa5;
   color: white;
@@ -193,6 +115,23 @@ form input, form select {
   border-radius: 20px;
 }
 
+.edit-btn, .delete-btn {
+  padding: 0.4rem 0.8rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.edit-btn {
+  background-color: #42a5f5;
+  color: white;
+}
+
+.delete-btn {
+  background-color: #ef5350;
+  color: white;
+  margin-left: 0.5rem;
+}
 
   </style>
 
