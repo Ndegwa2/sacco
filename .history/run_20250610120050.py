@@ -3,12 +3,13 @@ import os
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
 from flask import render_template, redirect, url_for, request, flash
-from Server.models.user import User
-from app import db
+pass
 from flask_login import login_user, logout_user, login_required
 from werkzeug.security import check_password_hash
 
 from server.models.user import User
+from flask import Flask
+app = Flask(__name__)
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -41,6 +42,7 @@ def register():
 
         user = User(username=username, email=email, role=role)
         user.set_password(password)
+        from config import db
         db.session.add(user)
         db.session.commit()
 

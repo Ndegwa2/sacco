@@ -367,62 +367,6 @@ form select {
   font-size: 1rem;
 }
 
-/* Booking Section Styling */
-.booking-section {
-  padding: 2rem;
-  text-align: center;
-}
-
-.booking-box {
-  width: 500px;
-  margin: 0 auto;
-  background-color: #f9f9f9;
-  padding: 2rem;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.booking-box h2 {
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
-  color: #004d40;
-}
-
-.booking-box label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: bold;
-  color: #333;
-}
-
-.booking-box input[type="text"],
-.booking-box input[type="date"],
-.booking-box input[type="time"],
-.booking-box select {
-  width: 100%;
-  padding: 0.7rem;
-  margin-bottom: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
-
-.booking-box .btn {
-  display: block;
-  width: 100%;
-  padding: 0.8rem 1.5rem;
-  background-color: #00bfa5;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.booking-box .btn:hover {
-  background-color: #008e76;
-}
-
 /* Auth container styling */
 .auth-container {
   width: 300px;
