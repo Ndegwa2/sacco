@@ -5,7 +5,6 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'serv
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
 from flask import Flask, request, redirect, render_template, flash, url_for, send_from_directory
-from flask_login import current_user
 from flask_login import LoginManager, login_user, logout_user, login_required
 from server.models.user import User
 from config import db
@@ -73,22 +72,6 @@ def register():
         return redirect("/login")
 
     return send_from_directory("Client", "register.html")
-
-@app.route("/dashboard_employee.html")
-@login_required
-def employee_dashboard():
-    if current_user.role != 'employee':
-        flash("Unauthorized access", "error")
-        return redirect("/")
-    return send_from_directory("Client", "dashboard_employee.html")
-
-@app.route("/dashboard_passenger.html")
-@login_required
-def passenger_dashboard():
-    if current_user.role != 'passenger':
-        flash("Unauthorized access", "error")
-        return redirect("/")
-    return send_from_directory("Client", "dashboard_passenger.html")
 
 @app.route('/booking', methods=['POST'])
 def booking():
