@@ -428,8 +428,8 @@ form select {
   width: 300px;
   margin: 50px auto;
   padding: 20px;
-  background-color: #f0fdfc; /* Light teal */
-  border: 1px solid #004d40; /* Dark teal */
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
   border-radius: 5px;
   text-align: center;
 }
@@ -449,7 +449,7 @@ form select {
 }
 
 .auth-container button {
-  background-color: #00bfa5; /* Teal */
+  background-color: #007bff;
   color: white;
   padding: 12px 20px;
   border: none;
@@ -459,7 +459,7 @@ form select {
 }
 
 .auth-container button:hover {
-  background-color: #008e76; /* Darker teal */
+  background-color: #0056b3;
 }
 
 .auth-container p {
@@ -467,7 +467,7 @@ form select {
 }
 
 .auth-container a {
-  color: #00bfa5; /* Teal */
+  color: #007bff;
 }
 .flashes {
   list-style: none;

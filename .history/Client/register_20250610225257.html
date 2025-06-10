@@ -8,12 +8,13 @@
 </head>
 <body>
   
-      <ul class="flashes">
-        
+      <ul class="flashes">essages %}
+        {% for category, message in m
           <li class="flash {{ category }}">{{ message }}</li>
-       
+        {% endfor %}
       </ul>
-    
+    {% endif %}
+  {% endwith %}
   <div class="auth-container">
       <h2>Create Account</h2>
       <form method="POST" action="/register">
