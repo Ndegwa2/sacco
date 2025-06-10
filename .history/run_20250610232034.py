@@ -124,22 +124,18 @@ def logout():
 
 @app.route('/admin/fleet/add', methods=['POST'])
 def add_fleet():
-    plate = request.form.get("plate_number")
-    model = request.form.get("vehicle_model")
-    route = request.form.get("assigned_route")
-    status = request.form.get("status")
+    plate_number = request.form.get('plate_number')
+    vehicle_model = request.form.get('vehicle_model')
+    assigned_route = request.form.get('assigned_route')
+    status = request.form.get('status')
 
-    new_vehicle = Fleet(
-        plate_number=plate,
-        vehicle_model=model,
-        assigned_route=route,
-        status=status
-    )
-    db.session.add(new_vehicle)
-    db.session.commit()
+    # For now, just print it to verify
+    print("Received Fleet Data:")
+    print(f"Plate: {plate_number}, Model: {vehicle_model}, Route: {assigned_route}, Status: {status}")
 
-    flash("Vehicle added successfully!")
-    return redirect(url_for('serve_static_client', filename='admin/FleetManagement.html'))
+    # You can later save this to the DB
+    flash('Vehicle successfully added!', 'success')
+    return redirect('/client/admin/FleetManagement.html')  # Make sure this path is correct
 
 if __name__ == "__main__":
     app.run(debug=True)

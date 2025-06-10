@@ -5,7 +5,6 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'serv
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
 from flask import Flask, request, redirect, render_template, flash, url_for, send_from_directory
-from server.models.fleet import Fleet
 from flask_login import current_user
 from flask_login import LoginManager, login_user, logout_user, login_required
 from server.models.user import User
@@ -121,25 +120,6 @@ def logout():
     logout_user()
     flash('Logged out successfully.')
     return redirect(url_for('login'))
-
-@app.route('/admin/fleet/add', methods=['POST'])
-def add_fleet():
-    plate = request.form.get("plate_number")
-    model = request.form.get("vehicle_model")
-    route = request.form.get("assigned_route")
-    status = request.form.get("status")
-
-    new_vehicle = Fleet(
-        plate_number=plate,
-        vehicle_model=model,
-        assigned_route=route,
-        status=status
-    )
-    db.session.add(new_vehicle)
-    db.session.commit()
-
-    flash("Vehicle added successfully!")
-    return redirect(url_for('serve_static_client', filename='admin/FleetManagement.html'))
 
 if __name__ == "__main__":
     app.run(debug=True)
