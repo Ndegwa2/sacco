@@ -9,7 +9,7 @@
 <body>
   <!-- Header -->
   <header class="admin-header" style="background-color: #f0f0f0; padding: 1rem;">
-    <h1 style="margin: 0; text-align: center;">NaiSmart Admin</h1>
+    <h1 style="margin: 0;">NaiSmart Admin</h1>
     <div class="admin-profile">
       <span>Admin</span>
       <a href="/logout">Logout</a>
@@ -17,21 +17,21 @@
   </header>
 
   <!-- Sidebar -->
-  <aside class="admin-sidebar" style="background-color: #004d40; padding-top: 60px; height: 100vh; width: 220px; position: fixed; top: 0; left: 0; overflow-y: auto; box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; z-index: 1000;">
-    <ul style="list-style: none; padding: 0; margin: 0;">
-      <li style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);"><a href="admin.html" style="display: block; padding: 1rem 1.2rem; color: #ffffff; text-decoration: none; font-size: 1rem; transition: background-color 0.3s, padding-left 0.3s;">Dashboard</a></li>
-      <li style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);"><a href="ManageRoute.html" style="display: block; padding: 1rem 1.2rem; color: #ffffff; text-decoration: none; font-size: 1rem; transition: background-color 0.3s, padding-left 0.3s;">Manage Routes</a></li>
-      <li style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);"><a href="FleetManagement.html" style="display: block; padding: 1rem 1.2rem; color: #ffffff; text-decoration: none; font-size: 1rem; transition: background-color 0.3s, padding-left 0.3s;">Fleet</a></li>
-      <li style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);"><a href="FareRecords.html" style="display: block; padding: 1rem 1.2rem; color: #ffffff; text-decoration: none; font-size: 1rem; transition: background-color 0.3s, padding-left 0.3s;">Fare Records</a></li>
-      <li style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);"><a href="sacco_members.html" class="active" style="display: block; padding: 1rem 1.2rem; color: #ffffff; text-decoration: none; font-size: 1rem; transition: background-color 0.3s, padding-left 0.3s; background-color: #00695c; font-weight: bold; padding-left: 1.6rem; border-left: 4px solid #00bfa5;">SACCO Members</a></li>
-      <li style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);"><a href="staff_management.html" style="display: block; padding: 1rem 1.2rem; color: #ffffff; text-decoration: none; font-size: 1rem; transition: background-color 0.3s, padding-left 0.3s;">Staff</a></li>
-      <li style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);"><a href="reports.html" style="display: block; padding: 1rem 1.2rem; color: #ffffff; text-decoration: none; font-size: 1rem; transition: background-color 0.3s, padding-left 0.3s;">Reports</a></li>
+  <aside class="admin-sidebar" style="width: 200px; background-color: #333; color: white; padding: 1rem;">
+    <ul style="list-style: none; padding: 0;">
+      <li style="margin-bottom: 0.5rem;"><a href="admin.html" style="color: white; text-decoration: none;">Dashboard</a></li>
+      <li style="margin-bottom: 0.5rem;"><a href="ManageRoute.html" style="color: white; text-decoration: none;">Manage Routes</a></li>
+      <li style="margin-bottom: 0.5rem;"><a href="FleetManagement.html" style="color: white; text-decoration: none;">Fleet</a></li>
+      <li style="margin-bottom: 0.5rem;"><a href="FareRecords.html" style="color: white; text-decoration: none;">Fare Records</a></li>
+      <li style="margin-bottom: 0.5rem;"><a href="sacco_members.html" class="active" style="color: white; text-decoration: none;">SACCO Members</a></li>
+      <li style="margin-bottom: 0.5rem;"><a href="staff_management.html" style="color: white; text-decoration: none;">Staff</a></li>
+      <li style="margin-bottom: 0.5rem;"><a href="reports.html" style="color: white; text-decoration: none;">Reports</a></li>
     </ul>
   </aside>
 
   <!-- Main Content -->
-  <main class="admin-main" style="padding: 2rem; background-color: #e0f2f1; min-height: 100vh; margin-left: 220px;">
-    <h2 style="color: #004d40; margin-bottom: 1.5rem; font-size: 1.8rem; text-align: center;">SACCO Members</h2>
+  <main class="admin-main" style="padding: 2rem; background-color: #e0f2f1; min-height: 100vh;">
+    <h2 style="color: #004d40; margin-bottom: 1.5rem; font-size: 1.8rem;">SACCO Members</h2>
 
     <section class="admin-section">
       <button class="add-btn" onclick="toggleForm()" style="background-color: #00bfa5; color: white; padding: 0.6rem 1.4rem; font-size: 1rem; border: none; border-radius: 6px; cursor: pointer; margin-bottom: 1.5rem; transition: background-color 0.3s ease;">+ Add Member</button>
