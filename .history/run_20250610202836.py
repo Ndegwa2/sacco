@@ -32,8 +32,7 @@ def login():
             login_user(user)
             return redirect("/admin/admin.html")  # or dashboard
 
-        flash("Invalid username or password. Please try again.", "error")
-        return redirect("/login")
+        return "Invalid credentials", 401
 
     return send_from_directory("Client", "login.html")
 
@@ -53,14 +52,12 @@ def register():
         password = request.form.get("password")
 
         if User.query.filter_by(username=username).first():
-            flash("Username already taken. Please choose another.", "error")
-            return redirect("/register")
+            return "User already exists", 409
 
         user = User(username=username, email=email)
         user.set_password(password)
         db.session.add(user)
         db.session.commit()
-        flash("Registration successful. You can now log in.", "success")
         return redirect("/login")
 
     return send_from_directory("Client", "register.html")

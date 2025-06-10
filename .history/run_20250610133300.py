@@ -1,25 +1,11 @@
 import sys
 import os
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'server')))
-
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
-from flask import Flask, request, redirect, render_template, flash, url_for, send_from_directory
+from flask import Flask, request, redirect, render_template, flash, url_for
 from flask_login import LoginManager, login_user, logout_user, login_required
 from server.models.user import User
-from config import db
-
-app = Flask(__name__, static_folder="Client", static_url_path="/")
-app.secret_key = 'your_secret_key'
-from config import configure_app
-configure_app(app)
-
-login_manager = LoginManager()
-login_manager.init_app(app)
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
-login_manager.login_view = "login"
+from config import db, app, login_manager
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -30,41 +16,38 @@ def login():
         user = User.query.filter_by(username=username).first()
         if user and user.check_password(password):
             login_user(user)
-            return redirect("/admin/admin.html")  # or dashboard
+            return redirect("/admin")  # Or any other page
 
-        flash("Invalid username or password. Please try again.", "error")
+        flash("Invalid username or password.")
         return redirect("/login")
 
-    return send_from_directory("Client", "login.html")
+    return render_template("login.html")  # this loads your login HTML file
 
-@app.route("/")
-def index():
-    return send_from_directory("Client", "index.html")
-
-@app.route('/client/<path:filename>')
-def serve_static_client(filename):
-    return send_from_directory('Client', filename)
-
-@app.route("/register", methods=["GET", "POST"])
+@app.route('/register', methods=['GET', 'POST'])
 def register():
-    if request.method == "POST":
-        username = request.form.get("username")
-        email = request.form.get("email")
-        password = request.form.get("password")
+    from config import db  # Prevent circular imports
+    if request.method == 'POST':
+        username = request.form.get('username')
+        email = request.form.get('email')
+        password = request.form.get('password')
 
-        if User.query.filter_by(username=username).first():
-            flash("Username already taken. Please choose another.", "error")
-            return redirect("/register")
+        # Check if user already exists
+        existing_user = User.query.filter((User.username == username) | (User.email == email)).first()
+        if existing_user:
+            flash("Username or Email already exists.", "error")
+            return redirect(url_for('register'))
 
-        user = User(username=username, email=email)
-        user.set_password(password)
-        db.session.add(user)
+        # Create new user
+        new_user = User(username=username, email=email)
+        new_user.set_password(password)
+
+        db.session.add(new_user)
         db.session.commit()
-        flash("Registration successful. You can now log in.", "success")
-        return redirect("/login")
 
-    return send_from_directory("Client", "register.html")
+        flash("Account created successfully! Please log in.", "success")
+        return redirect(url_for('login'))
 
+    return render_template('register.html')
 @app.route('/booking', methods=['POST'])
 def booking():
     if request.method == 'POST':
@@ -86,13 +69,11 @@ def booking():
         return redirect(url_for('index'))  # Redirect to the home page after booking
     else:
         return redirect(url_for('Booking'))  # Redirect to the booking page if accessed without submitting the form
-
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
     flash('Logged out successfully.')
     return redirect(url_for('login'))
-
 if __name__ == "__main__":
     app.run(debug=True)

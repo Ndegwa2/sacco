@@ -6,19 +6,15 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
 from flask import Flask, request, redirect, render_template, flash, url_for, send_from_directory
 from flask_login import LoginManager, login_user, logout_user, login_required
-from server.models.user import User
+from server.models import user  
+User = user.User
 from config import db
 
 app = Flask(__name__, static_folder="Client", static_url_path="/")
 app.secret_key = 'your_secret_key'
-from config import configure_app
-configure_app(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
 login_manager.login_view = "login"
 
 @app.route("/login", methods=["GET", "POST"])
@@ -32,14 +28,12 @@ def login():
             login_user(user)
             return redirect("/admin/admin.html")  # or dashboard
 
-        flash("Invalid username or password. Please try again.", "error")
-        return redirect("/login")
-
-    return send_from_directory("Client", "login.html")
+        return "Invalid credentials", 401
 
 @app.route("/")
 def index():
     return send_from_directory("Client", "index.html")
+    return send_from_directory("Client", "login.html")
 
 @app.route('/client/<path:filename>')
 def serve_static_client(filename):
@@ -53,14 +47,12 @@ def register():
         password = request.form.get("password")
 
         if User.query.filter_by(username=username).first():
-            flash("Username already taken. Please choose another.", "error")
-            return redirect("/register")
+            return "User already exists", 409
 
         user = User(username=username, email=email)
         user.set_password(password)
         db.session.add(user)
         db.session.commit()
-        flash("Registration successful. You can now log in.", "success")
         return redirect("/login")
 
     return send_from_directory("Client", "register.html")

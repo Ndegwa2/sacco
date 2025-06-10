@@ -11,8 +11,6 @@ from config import db
 
 app = Flask(__name__, static_folder="Client", static_url_path="/")
 app.secret_key = 'your_secret_key'
-from config import configure_app
-configure_app(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -31,15 +29,14 @@ def login():
         if user and user.check_password(password):
             login_user(user)
             return redirect("/admin/admin.html")  # or dashboard
+    return "Invalid credentials", 401
 
-        flash("Invalid username or password. Please try again.", "error")
-        return redirect("/login")
-
-    return send_from_directory("Client", "login.html")
+return send_from_directory("Client", "login.html")
 
 @app.route("/")
 def index():
-    return send_from_directory("Client", "index.html")
+return send_from_directory("Client", "index.html")
+    return send_from_directory("Client", "login.html")
 
 @app.route('/client/<path:filename>')
 def serve_static_client(filename):
@@ -53,14 +50,12 @@ def register():
         password = request.form.get("password")
 
         if User.query.filter_by(username=username).first():
-            flash("Username already taken. Please choose another.", "error")
-            return redirect("/register")
+            return "User already exists", 409
 
         user = User(username=username, email=email)
         user.set_password(password)
         db.session.add(user)
         db.session.commit()
-        flash("Registration successful. You can now log in.", "success")
         return redirect("/login")
 
     return send_from_directory("Client", "register.html")
