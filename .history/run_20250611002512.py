@@ -145,7 +145,7 @@ def add_fleet():
 @login_required
 def manage_routes():
     routes = Fleet.query.all()
-    return render_template('templates/admin/ManageRoute.html', routes=routes)
+    return render_template('admin/ManageRoute.html', routes=routes)
 
 @app.route('/admin/routes/add', methods=['POST'])
 @login_required

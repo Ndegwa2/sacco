@@ -4,7 +4,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'serv
 
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
-from flask import Flask, request, redirect, render_template, flash, url_for, send_from_directory
+from flask import Flask, request, redirect, render_template, flash, url_for, send_from_directory, render_template
 from server.models.fleet import Fleet
 from flask_login import current_user
 from flask_login import LoginManager, login_user, logout_user, login_required
@@ -54,6 +54,10 @@ def index():
 @app.route('/client/<path:filename>')
 def serve_static_client(filename):
     return send_from_directory('Client', filename)
+
+@app.route("/admin/FleetManagement.html")
+def admin_fleet_management():
+    return send_from_directory("Client/admin", "FleetManagement.html")
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -139,35 +143,8 @@ def add_fleet():
     db.session.commit()
 
     flash("Vehicle added successfully!")
-    return redirect(url_for('serve_static_client', filename='admin/FleetManagement.html'))
-
-@app.route('/admin/routes')
-@login_required
-def manage_routes():
-    routes = Fleet.query.all()
-    return render_template('templates/admin/ManageRoute.html', routes=routes)
-
-@app.route('/admin/routes/add', methods=['POST'])
-@login_required
-def add_route():
-    route_name = request.form.get("route_name")
-    origin = request.form.get("origin")
-    destination = request.form.get("destination")
-    stops = request.form.get("stops")
-    status = request.form.get("status")
-
-    assigned_route = f"{route_name} - {origin} to {destination} ({stops})"
-    new_route = Fleet(
-        assigned_route=assigned_route,
-        plate_number="N/A",  # Placeholder value
-        vehicle_model="N/A", # Placeholder value
-        status=status
-    )
-    db.session.add(new_route)
-    db.session.commit()
-
-    flash("Route added successfully!")
-    return redirect(url_for('manage_routes'))
+    fleets = Fleet.query.all()
+    return render_template('Client/templates/admin/FleetManagement.html', fleets=fleets)
 
 if __name__ == "__main__":
     app.run(debug=True)

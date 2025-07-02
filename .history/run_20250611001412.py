@@ -145,29 +145,7 @@ def add_fleet():
 @login_required
 def manage_routes():
     routes = Fleet.query.all()
-    return render_template('templates/admin/ManageRoute.html', routes=routes)
-
-@app.route('/admin/routes/add', methods=['POST'])
-@login_required
-def add_route():
-    route_name = request.form.get("route_name")
-    origin = request.form.get("origin")
-    destination = request.form.get("destination")
-    stops = request.form.get("stops")
-    status = request.form.get("status")
-
-    assigned_route = f"{route_name} - {origin} to {destination} ({stops})"
-    new_route = Fleet(
-        assigned_route=assigned_route,
-        plate_number="N/A",  # Placeholder value
-        vehicle_model="N/A", # Placeholder value
-        status=status
-    )
-    db.session.add(new_route)
-    db.session.commit()
-
-    flash("Route added successfully!")
-    return redirect(url_for('manage_routes'))
+    return render_template('admin/ManageRoute.html', routes=routes)
 
 if __name__ == "__main__":
     app.run(debug=True)

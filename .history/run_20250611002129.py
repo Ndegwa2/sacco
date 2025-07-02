@@ -145,7 +145,7 @@ def add_fleet():
 @login_required
 def manage_routes():
     routes = Fleet.query.all()
-    return render_template('templates/admin/ManageRoute.html', routes=routes)
+    return render_template('admin/ManageRoute.html', routes=routes)
 
 @app.route('/admin/routes/add', methods=['POST'])
 @login_required
@@ -156,11 +156,11 @@ def add_route():
     stops = request.form.get("stops")
     status = request.form.get("status")
 
-    assigned_route = f"{route_name} - {origin} to {destination} ({stops})"
     new_route = Fleet(
-        assigned_route=assigned_route,
-        plate_number="N/A",  # Placeholder value
-        vehicle_model="N/A", # Placeholder value
+        assigned_route=route_name,
+        origin=origin,
+        destination=destination,
+        stops=stops,
         status=status
     )
     db.session.add(new_route)
