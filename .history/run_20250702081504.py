@@ -11,11 +11,9 @@ from flask_login import current_user
 from flask_login import LoginManager, login_user, logout_user, login_required
 from server.models.user import User
 from config import db
-from flask_migrate import Migrate
 
 app = Flask(__name__, static_folder="Client", static_url_path="/")
 app.secret_key = 'your_secret_key'
-migrate = Migrate(app, db)
 from config import configure_app
 configure_app(app)
 
@@ -153,29 +151,24 @@ def manage_routes():
 @app.route('/admin/routes/add', methods=['POST'])
 @login_required
 def add_route():
-    try:
-        route_name = request.form.get("route_name")
-        origin = request.form.get("origin")
-        destination = request.form.get("destination")
-        stops = request.form.get("stops")
-        status = request.form.get("status")
+    route_name = request.form.get("route_name")
+    origin = request.form.get("origin")
+    destination = request.form.get("destination")
+    stops = request.form.get("stops")
+    status = request.form.get("status")
 
-        new_route = Route(
-            route_name=route_name,
-            origin=origin,
-            destination=destination,
-            stops=stops,
-            status=status
-        )
-        db.session.add(new_route)
-        db.session.commit()
+    new_route = Route(
+        route_name=route_name,
+        origin=origin,
+        destination=destination,
+        stops=stops,
+        status=status
+    )
+    db.session.add(new_route)
+    db.session.commit()
 
-        flash("Route added successfully!")
-        return redirect(url_for('manage_routes'))
-
-    except Exception as e:
-        print("🚨 ERROR ADDING ROUTE:", e)
-        return "Something went wrong: " + str(e), 500
+    flash("Route added successfully!")
+    return redirect(url_for('manage_routes'))
 
 if __name__ == "__main__":
     app.run(debug=True)
