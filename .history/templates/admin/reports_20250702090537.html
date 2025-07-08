@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Reports - NaiSmart Admin</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="admin-header" style="background-color: #f0f0f0; padding: 1rem;">
+    <h1 style="margin: 0;">NaiSmart Admin</h1>
+    <div class="admin-profile">
+      <span>Admin</span>
+      <a href="/logout">Logout</a>
+    </div>
+  </header>
+
+  <!-- Sidebar -->
+  <aside class="admin-sidebar" style="background-color: #004d40; padding-top: 60px; height: 100vh; width: 220px; position: fixed; top: 0; left: 0; overflow-y: auto; box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; z-index: 1000;">
+    <ul style="list-style: none; padding: 0; margin: 0;">
+      <li style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);"><a href="admin.html" style="display: block; padding: 1rem 1.2rem; color: #ffffff; text-decoration: none; font-size: 1rem; transition: background-color 0.3s, padding-left 0.3s;">Dashboard</a></li>
+      <li style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);"><a href="ManageRoute.html" style="display: block; padding: 1rem 1.2rem; color: #ffffff; text-decoration: none; font-size: 1rem; transition: background-color 0.3s, padding-left 0.3s;">Manage Routes</a></li>
+      <li style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);"><a href="FleetManagement.html" style="display: block; padding: 1rem 1.2rem; color: #ffffff; text-decoration: none; font-size: 1rem; transition: background-color 0.3s, padding-left 0.3s;">Fleet</a></li>
+      <li style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);"><a href="FareRecords.html" style="display: block; padding: 1rem 1.2rem; color: #ffffff; text-decoration: none; font-size: 1rem; transition: background-color 0.3s, padding-left 0.3s;">Fare Records</a></li>
+      <li style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);"><a href="sacco_members.html" style="display: block; padding: 1rem 1.2rem; color: #ffffff; text-decoration: none; font-size: 1rem; transition: background-color 0.3s, padding-left 0.3s;">SACCO Members</a></li>
+      <li style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);"><a href="staff_management.html" style="display: block; padding: 1rem 1.2rem; color: #ffffff; text-decoration: none; font-size: 1rem; transition: background-color 0.3s, padding-left 0.3s;">Staff</a></li>
+      <li style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);"><a href="reports.html" class="active" style="display: block; padding: 1rem 1.2rem; color: #ffffff; text-decoration: none; font-size: 1rem; transition: background-color 0.3s, padding-left 0.3s; background-color: #00695c; font-weight: bold; padding-left: 1.6rem; border-left: 4px solid #00bfa5;">Reports</a></li>
+    </ul>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="admin-main" style="padding: 2rem; background-color: #e0f2f1; min-height: 100vh; margin-left: 220px;">
+    <h2 style="color: #004d40; margin-bottom: 1.5rem; font-size: 1.8rem;">Reports & Analytics</h2>
+
+    <section class="admin-section">
+      <div class="report-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+        <div class="report-card" style="background-color: #ffffff; border-left: 6px solid #00bfa5; padding: 1.2rem 1.4rem; border-radius: 10px; box-shadow: 0 2px 8px rgba(0, 105, 92, 0.05); transition: transform 0.3s ease;">
+          <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: #004d40;">Total Revenue (This Month)</h3>
+          <p style="font-size: 1.4rem; font-weight: bold; color: #00695c;">KES 1,250,000</p>
+        </div>
+        <div class="report-card" style="background-color: #ffffff; border-left: 6px solid #00bfa5; padding: 1.2rem 1.4rem; border-radius: 10px; box-shadow: 0 2px 8px rgba(0, 105, 92, 0.05); transition: transform 0.3s ease;">
+          <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: #004d40;">Most Active Route</h3>
+          <p style="font-size: 1.4rem; font-weight: bold; color: #00695c;">CBD - Rongai</p>
+        </div>
+        <div class="report-card" style="background-color: #ffffff; border-left: 6px solid #00bfa5; padding: 1.2rem 1.4rem; border-radius: 10px; box-shadow: 0 2px 8px rgba(0, 105, 92, 0.05); transition: transform 0.3s ease;">
+          <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: #004d40;">Vehicles in Operation</h3>
+          <p style="font-size: 1.4rem; font-weight: bold; color: #00695c;">32 Active</p>
+        </div>
+        <div class="report-card" style="background-color: #ffffff; border-left: 6px solid #00bfa5; padding: 1.2rem 1.4rem; border-radius: 10px; box-shadow: 0 2px 8px rgba(0, 105, 92, 0.05); transition: transform 0.3s ease;">
+          <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: #004d40;">Top Earning Driver</h3>
+          <p style="font-size: 1.4rem; font-weight: bold; color: #00695c;">John Mwangi (KES 95,000)</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="admin-section">
+      <h3 style="margin-bottom: 1rem; color: #004d40;">Recent Activity Log</h3>
+      <table class="route-table" style="width: 100%; border-collapse: collapse; background: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+        <thead>
+          <tr>
+            <th style="background-color: #004d40; color: white; padding: 1rem; text-align: left;">Date</th>
+            <th style="background-color: #004d40; color: white; padding: 1rem; text-align: left;">Activity</th>
+            <th style="background-color: #004d40; color: white; padding: 1rem; text-align: left;">Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 1rem; border-bottom: 1px solid #e0e0e0;">2025-06-08</td>
+            <td style="padding: 1rem; border-bottom: 1px solid #e0e0e0;">Fare Collection Logged</td>
+            <td style="padding: 1rem; border-bottom: 1px solid #e0e0e0;">KES 18,500 on Route: CBD - Githurai</td>
+          </tr>
+          <tr>
+            <td style="padding: 1rem; border-bottom: 1px solid #e0e0e0;">2025-06-07</td>
+            <td style="padding: 1rem; border-bottom: 1px solid #e0e0e0;">Fleet Maintenance Update</td>
+            <td style="padding: 1rem; border-bottom: 1px solid #e0e0e0;">KCN 882B - Tyres Replaced</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+</body>
+</html>
