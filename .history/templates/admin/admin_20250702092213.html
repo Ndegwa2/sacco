@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard - NaiSmart</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="admin-header">
+    <h1>NaiSmart Admin</h1>
+    <div class="admin-profile">
+      <span>Admin</span>
+      <a href="/logout">Logout</a>
+    </div>
+  </header>
+
+  <!-- Sidebar -->
+  <aside class="admin-sidebar">
+    <ul>
+      <li><a href="{{ url_for('admin_dashboard') }}">Dashboard</a></li>
+      <li><a href="{{ url_for('manage_routes') }}">Manage Routes</a></li>
+      <li><a href="{{ url_for('fleet_management') }}">Fleet</a></li>
+      <li><a href="{{ url_for('fare_records') }}">Fare Records</a></li>
+      <li><a href="{{ url_for('sacco_members') }}">SACCO Members</a></li>
+      <li><a href="{{ url_for('staff_management') }}">Staff</a></li>
+      <li><a href="{{ url_for('reports') }}">Reports</a></li>
+    </ul>
+  </aside>
+  <style>
+    * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  display: flex;
+  min-height: 100vh;
+  color: #333;
+}
+
+/* Header */
+.admin-header {
+  position: fixed;
+  top: 0;
+  left: 200px;
+  right: 0;
+  height: 60px;
+  background-color: #004d40;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+  z-index: 1000;
+}
+
+.admin-profile a {
+  color: #ffffff;
+  margin-left: 1rem;
+  text-decoration: none;
+}
+
+/* Sidebar */
+.admin-sidebar {
+  width: 200px;
+  background-color: #00695c;
+  height: 100vh;
+  padding-top: 60px;
+  position: fixed;
+}
+
+.admin-sidebar ul {
+  list-style: none;
+}
+
+.admin-sidebar ul li {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.admin-sidebar ul li a {
+  display: block;
+  padding: 1rem;
+  color: white;
+  text-decoration: none;
+}
+
+.admin-sidebar ul li a:hover {
+  background-color: #004d40;
+}
+
+/* Main content */
+.admin-main {
+  margin-left: 200px;
+  margin-top: 60px;
+  padding: 2rem;
+  flex-grow: 1;
+  background-color: #f5f5f5;
+}
+
+.dashboard-widgets {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.widget {
+  background-color: #e0f2f1;
+  flex: 1;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  text-align: center;
+  font-weight: bold;
+  color: #004d40;
+}
+
+.admin-section {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+  </style>
+
+  <!-- Main Content -->
+  <main class="admin-main">
+    <h2>Welcome, Admin</h2>
+    <div class="dashboard-widgets">
+      <div class="widget">Total Bookings</div>
+      <div class="widget">Total Revenue</div>
+      <div class="widget">Active Routes</div>
+    </div>
+
+    <div class="admin-section">
+      <h3>Recent Activity</h3>
+      <p>This area can display recent booking logs, updates or system alerts.</p>
+    </div>
+  </main>
+
+</body>
+</html>

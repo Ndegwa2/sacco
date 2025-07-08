@@ -3,32 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fleet Management - NaiSmart Admin</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
-</head>
-<body>
-  <!-- Header -->
-  <header class="admin-header">
-    <h1>NaiSmart Admin</h1>
-    <div class="admin-profile">
-      <span>Admin</span>
-      <a href="/logout">Logout</a>
-    </div>
-  </header>
-
-  <!-- Sidebar -->
-  <aside class="admin-sidebar">
-    <ul>
-      <li><a href="{{ url_for('admin_dashboard') }}">Dashboard</a></li>
-      <li><a href="{{ url_for('manage_routes') }}">Manage Routes</a></li>
-      <li><a href="{{ url_for('fleet_management') }}" class="active">Fleet</a></li>
-      <li><a href="{{ url_for('fare_records') }}">Fare Records</a></li>
-      <li><a href="{{ url_for('sacco_members') }}">SACCO Members</a></li>
-      <li><a href="{{ url_for('staff_management') }}">Staff</a></li>
-      <li><a href="{{ url_for('reports') }}">Reports</a></li>
-    </ul>
-  </aside>
-
+  <title>Fare Records - NaiSmart Admin</title>
   <style>
 /* Admin Header */
 .admin-header {
@@ -112,7 +87,7 @@
 }
 
 /* Form Styling */
-form#addFleetForm {
+form#addFareForm {
   background: #f1f8f6;
   padding: 1.5rem;
   border-radius: 8px;
@@ -185,84 +160,77 @@ form select {
   color: white;
 }
   </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="admin-header">
+    <h1>NaiSmart Admin</h1>
+    <div class="admin-profile">
+      <span>Admin</span>
+      <a href="/logout">Logout</a>
+    </div>
+  </header>
+
+  <!-- Sidebar -->
+  <aside class="admin-sidebar">
+    <ul>
+      <li><a href="{{ url_for('admin_dashboard') }}">Dashboard</a></li>
+      <li><a href="{{ url_for('manage_routes') }}">Manage Routes</a></li>
+      <li><a href="{{ url_for('fleet_management') }}">Fleet</a></li>
+      <li><a href="{{ url_for('fare_records') }}" class="active">Fare Records</a></li>
+      <li><a href="{{ url_for('sacco_members') }}">SACCO Members</a></li>
+      <li><a href="{{ url_for('staff_management') }}">Staff</a></li>
+      <li><a href="{{ url_for('reports') }}">Reports</a></li>
+    </ul>
+  </aside>
 
   <!-- Main Content -->
   <main class="admin-main">
-    <h2>Fleet Management</h2>
+    <h2>Fare Collection Records</h2>
 
     <section class="admin-section">
-      <!-- Add Button -->
-      <button class="add-btn" onclick="toggleForm()">+ Add New Vehicle</button>
+      <button class="add-btn" onclick="toggleForm()">+ Add Fare Record</button>
 
-      <!-- Add Vehicle Form -->
-      <form id="addFleetForm" style="display:none;" method="POST" action="/admin/fleet/add">
+      <!-- Add Fare Form -->
+      <form id="addFareForm" style="display:none;" method="POST" action="/admin/fare-records/add">
         <input type="text" name="plate_number" placeholder="Plate Number (e.g. KDA 123A)" required>
-        <input type="text" name="vehicle_model" placeholder="Vehicle Model (e.g. Nissan Caravan)" required>
-        <input type="text" name="assigned_route" placeholder="Assigned Route (e.g. CBD - Rongai)" required>
-        <select name="status">
-          <option value="active">Active</option>
-          <option value="inactive">Inactive</option>
-        </select>
-        <button type="submit">Save Vehicle</button>
+        <input type="text" name="route" placeholder="Route (e.g. CBD - Rongai)" required>
+        <input type="text" name="amount" placeholder="Amount Collected (e.g. 3400)" required>
+        <input type="text" name="conductor" placeholder="Conductor Name" required>
+        <input type="date" name="date_collected" required>
+        <button type="submit">Save Record</button>
       </form>
 
-      <!-- Fleet Table -->
+      <!-- Fare Table -->
       <table class="route-table">
         <thead>
           <tr>
+            <th>Date</th>
             <th>Plate No.</th>
-            <th>Model</th>
             <th>Route</th>
-            <th>Status</th>
+            <th>Amount</th>
+            <th>Conductor</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           <tr>
+            <td>2025-06-08</td>
             <td>KDA 123A</td>
-            <td>Nissan Caravan</td>
             <td>CBD - Rongai</td>
-            <td><span class="badge active">Active</span></td>
+            <td>KES 3,400</td>
+            <td>John Kariuki</td>
             <td>
               <button class="edit-btn">Edit</button>
               <button class="delete-btn">Delete</button>
             </td>
           </tr>
           <tr>
-            <td>KCG 456B</td>
-            <td>Toyota Hiace</td>
+            <td>2025-06-08</td>
+            <td>KDH 456B</td>
             <td>CBD - Githurai</td>
-            <td><span class="badge inactive">Inactive</span></td>
-            <td>
-              <button class="edit-btn">Edit</button>
-              <button class="delete-btn">Delete</button>
-            </td>
-          </tr>
-          <tr>
-            <td>KDH 789C</td>
-            <td>Isuzu NPR</td>
-            <td>CBD - Umoja</td>
-            <td><span class="badge active">Active</span></td>
-            <td>
-              <button class="edit-btn">Edit</button>
-              <button class="delete-btn">Delete</button>
-            </td>
-          </tr>
-          <tr>
-            <td>KDJ 234D</td>
-            <td>Nissan NV350</td>
-            <td>CBD - Thika</td>
-            <td><span class="badge inactive">Inactive</span></td>
-            <td>
-              <button class="edit-btn">Edit</button>
-              <button class="delete-btn">Delete</button>
-            </td>
-          </tr>
-          <tr>
-            <td>KCL 678E</td>
-            <td>Toyota Coaster</td>
-            <td>CBD - Eastleigh</td>
-            <td><span class="badge active">Active</span></td>
+            <td>KES 2,800</td>
+            <td>Jane Wanjiru</td>
             <td>
               <button class="edit-btn">Edit</button>
               <button class="delete-btn">Delete</button>
@@ -275,7 +243,7 @@ form select {
 
   <script>
     function toggleForm() {
-      const form = document.getElementById('addFleetForm');
+      const form = document.getElementById('addFareForm');
       form.style.display = form.style.display === 'none' ? 'block' : 'none';
     }
   </script>

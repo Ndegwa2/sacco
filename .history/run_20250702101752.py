@@ -7,7 +7,6 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 from flask import Flask, request, redirect, render_template, flash, url_for, send_from_directory
 from server.models.fleet import Fleet
 from server.models.route import Route
-from server.models import User, Vehicle, Route, Booking  # Adjust based on your structure
 from flask_login import current_user
 from flask_login import LoginManager, login_user, logout_user, login_required
 from server.models.user import User
@@ -205,10 +204,7 @@ def admin_dashboard():
     if current_user.role != 'admin':
         flash("Unauthorized access", "error")
         return redirect("/")
-    users = User.query.all()
-    routes = Route.query.all()
-    bookings = Booking.query.all()
-    return render_template('admin/admin.html', users=users, routes=routes, bookings=bookings)
+    return render_template('admin/admin.html')
 
 if __name__ == "__main__":
     app.run(debug=True)

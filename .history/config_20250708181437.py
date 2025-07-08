@@ -1,5 +1,3 @@
-import pymysql
-pymysql.install_as_MySQLdb()
 # config.py
 from flask_sqlalchemy import SQLAlchemy
 

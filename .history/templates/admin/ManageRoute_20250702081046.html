@@ -20,13 +20,13 @@
   <!-- Sidebar -->
   <aside class="admin-sidebar">
     <ul>
-      <li><a href="{{ url_for('admin_dashboard') }}">Dashboard</a></li>
-      <li><a href="{{ url_for('manage_routes') }}" class="active">Manage Routes</a></li>
-      <li><a href="{{ url_for('fleet_management') }}">Fleet</a></li>
-      <li><a href="{{ url_for('fare_records') }}">Fare Records</a></li>
-      <li><a href="{{ url_for('sacco_members') }}">SACCO Members</a></li>
-      <li><a href="{{ url_for('staff') }}">Staff</a></li>
-      <li><a href="{{ url_for('reports') }}">Reports</a></li>
+      <li><a href="admin.html">Dashboard</a></li>
+      <li><a href="/admin/routes" class="active">Manage Routes</a></li>
+      <li><a href="FleetManagement.html">Fleet</a></li>
+      <li><a href="FareRecords.html">Fare Records</a></li>
+      <li><a href="sacco_members.html">SACCO Members</a></li>
+      <li><a href="staff_management.html">Staff</a></li>
+      <li><a href="reports.html">Reports</a></li>
     </ul>
   </aside>
 
@@ -229,9 +229,9 @@ form input, form select {
           </tr>
         </thead>
         <tbody>
-        {% for route in routes %}
+        
           <tr>
-            <td>{{ route.route_name }}</td>
+            <td>{{ route.assigned_route }}</td>
             <td>{{ route.origin }}</td>
             <td>{{ route.destination }}</td>
             <td>{{ route.stops }}</td>
@@ -247,7 +247,7 @@ form input, form select {
               <button class="delete-btn">Delete</button>
             </td>
           </tr>
-        {% endfor %}
+        
         </tbody>
       </table>
     </section>

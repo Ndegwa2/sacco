@@ -7,7 +7,6 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 from flask import Flask, request, redirect, render_template, flash, url_for, send_from_directory
 from server.models.fleet import Fleet
 from server.models.route import Route
-from server.models import User, Vehicle, Route, Booking  # Adjust based on your structure
 from flask_login import current_user
 from flask_login import LoginManager, login_user, logout_user, login_required
 from server.models.user import User
@@ -157,6 +156,7 @@ def fleet_management():
     return render_template('admin/FleetManagement.html')
 
 @app.route('/admin/fare-records')
+@app.route('/admin/fare-records')
 @login_required
 def fare_records():
     return render_template('admin/FareRecords.html')
@@ -199,16 +199,54 @@ def add_route():
         print("🚨 ERROR ADDING ROUTE:", e)
         return "Something went wrong: " + str(e), 500
 
+
 @app.route('/admin')
 @login_required
 def admin_dashboard():
     if current_user.role != 'admin':
         flash("Unauthorized access", "error")
         return redirect("/")
-    users = User.query.all()
-    routes = Route.query.all()
-    bookings = Booking.query.all()
-    return render_template('admin/admin.html', users=users, routes=routes, bookings=bookings)
+    return render_template('admin/admin.html')
+
+@app.route('/admin/fare_records')
+@login_required
+def fare_records():
+    return render_template('admin/FareRecords.html')
+
+@app.route('/admin/sacco_members')
+@login_required
+def sacco_members():
+    return render_template('admin/sacco_members.html')
+
+@app.route('/admin/staff_management')
+@login_required
+def staff_management():
+    return render_template('admin/staff_management.html')
+
+@app.route('/admin/reports')
+@login_required
+def reports():
+    return render_template('admin/reports.html')
+
+@app.route('/admin/fare_records')
+@login_required
+def fare_records():
+    return render_template('admin/FareRecords.html')
+
+@app.route('/admin/sacco_members')
+@login_required
+def sacco_members():
+    return render_template('admin/sacco_members.html')
+
+@app.route('/admin/staff_management')
+@login_required
+def staff_management():
+    return render_template('admin/staff_management.html')
+
+@app.route('/admin/reports')
+@login_required
+def reports():
+    return render_template('admin/reports.html')
 
 if __name__ == "__main__":
     app.run(debug=True)
