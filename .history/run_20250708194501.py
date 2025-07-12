@@ -1,7 +1,3 @@
-import os
-# Kill any lingering Flask process on port 5000
-# This command silently frees port 5000 before Flask starts.
-os.system('fuser -k 5000/tcp > /dev/null 2>&1')
 import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'server')))
@@ -53,7 +49,6 @@ def login():
         flash("Invalid username or password", "error")
         return redirect("/login")
 
-    print(current_app.config['SQLALCHEMY_DATABASE_URI'])
     return send_from_directory("Client", "login.html")
 
 @app.route("/")
