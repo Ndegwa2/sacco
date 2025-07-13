@@ -1,5 +1,5 @@
 from server.models import User, Vehicle, Route, Booking  # Adjust based on your structure
-import os
+               import os
 # Kill any lingering Flask process on port 5000
 # This command silently frees port 5000 before Flask starts.
 os.system('fuser -k 5000/tcp > /dev/null 2>&1')
@@ -12,8 +12,10 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 from flask import Flask, request, redirect, render_template, flash, url_for, send_from_directory
 from server.models.fleet import Fleet
 from server.models.route import Route
+from server.models import User, Vehicle, Route, Booking  # Adjust based on your structure
 from flask_login import current_user
 from flask_login import LoginManager, login_user, logout_user, login_required
+from server.models.user import User
 from config import db
 from flask_migrate import Migrate
 
@@ -185,10 +187,6 @@ def reports():
 def add_route():
     try:
         route_name = request.form.get("route_name")
-        origin = request.form.get("origin")
-        destination = request.form.get("destination")
-        stops = request.form.get("stops")
-        status = request.form.get("status")
 
         new_route = Route(
             route_name=route_name,
