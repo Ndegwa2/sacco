@@ -10,7 +10,6 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'serv
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
 from flask import Flask, request, redirect, render_template, flash, url_for, send_from_directory
-from flask import current_app
 from server.models.fleet import Fleet
 from server.models.route import Route
 from flask_login import current_user
