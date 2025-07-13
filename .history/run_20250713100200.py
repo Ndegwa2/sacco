@@ -35,33 +35,28 @@ login_manager.login_view = "login"
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    try:
-        if request.method == "POST":
-            username = request.form.get("username")
-            password = request.form.get("password")
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
 
-            user = User.query.filter_by(username=username).first()
-            if user and user.check_password(password):
-                login_user(user)
-                flash("Login successful!", "success")
+        user = User.query.filter_by(username=username).first()
+        if user and user.check_password(password):
+            login_user(user)
+            flash("Login successful!", "success")
 
-                # Redirect based on user role
-                if user.role == 'admin':
-                    return redirect(url_for('admin_dashboard'))
-                elif user.role == 'employee':
-                    return redirect("/dashboard_employee.html")
-                else:  # default to passenger
-                    return redirect("/index.html")
+            # Redirect based on user role
+            if user.role == 'admin':
+                return redirect(url_for('admin_dashboard'))
+            elif user.role == 'employee':
+                return redirect("/dashboard_employee.html")
+            else:  # default to passenger
+                return redirect("/index.html")
 
-            flash("Invalid username or password", "error")
-            return redirect("/login")
+        flash("Invalid username or password", "error")
+        return redirect("/login")
 
-        print(current_app.config['SQLALCHEMY_DATABASE_URI'])
-        return send_from_directory("Client", "login.html")
-    except Exception as e:
-        print("❌ Login error:", e)
-        traceback.print_exc()
-        return "Login failed", 500
+    print(current_app.config['SQLALCHEMY_DATABASE_URI'])
+    return send_from_directory("Client", "login.html")
 
 @app.route("/")
 def index():
