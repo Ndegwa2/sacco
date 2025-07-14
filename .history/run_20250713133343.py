@@ -62,6 +62,7 @@ def login():
             flash("Invalid username or password", "error")
             return redirect("/login")
 
+        print(current_app.config['SQLALCHEMY_DATABASE_URI'])
         return send_from_directory("Client", "login.html")
     except Exception as e:
         print("\u274c Login error:", e)
@@ -100,10 +101,29 @@ def employee_dashboard():
 @app.route("/dashboard_passenger.html")
 @login_required
 def passenger_dashboard():
-  if current_user.role != 'passenger':
-    flash("Unauthorized access", "error")
-    return redirect("/")
-  return send_from_directory("Client", "dashboard_passenger.html")
+    if current_user.role != 'passenger':
+        flash("Unauthorized access", "error")
+        return redirect("/")
+    return send_from_directory("Client", "dashboard_passenger.html")
+
+@app.route('/booking', methods=['GET', 'POST'])
+def booking():
+    if request.method == 'GET':
+        return send_from_directory("Client", "Booking.html")
+    elif request.method == 'POST':
+        print(f"Form data: {request.form}")
+        route = request.form.get('route')
+        pickup = request.form.get('pickup')
+        dropoff = request.form.get('dropoff')
+        date = request.form.get('date')
+        time = request.form.get('time')
+        name = request.form.get('name')
+        contact = request.form.get('contact')
+
+        print(f"Booking Details:\nRoute: {route}\nPickup: {pickup}\nDropoff: {dropoff}\nDate: {date}\nTime: {time}\nName: {name}\nContact: {contact}")
+
+        flash("Booking confirmed! You will receive a confirmation email shortly.", "success")
+        return redirect(url_for('index'))
 
 @app.route('/logout')
 @login_required

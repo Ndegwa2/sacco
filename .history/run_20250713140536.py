@@ -98,6 +98,13 @@ def employee_dashboard():
     return send_from_directory("Client", "dashboard_employee.html")
 
 @app.route("/dashboard_passenger.html")
+@app.route("/dashboard_passenger.html")
+@login_required
+def passenger_dashboard():
+  if current_user.role != 'passenger':
+    flash("Unauthorized access", "error")
+    return redirect("/")
+  return send_from_directory("Client", "dashboard_passenger.html")
 @login_required
 def passenger_dashboard():
   if current_user.role != 'passenger':

@@ -1,44 +1,42 @@
+
 import traceback
 import os
-import sys
-from flask import Flask, request, redirect, render_template, flash, url_for, send_from_directory, current_app
-from flask_login import LoginManager, login_user, logout_user, login_required, current_user
-from flask_migrate import Migrate
-
-# Terminate any Flask process using port 5000
+# Kill any lingering Flask process on port 5000
+# This command silently frees port 5000 before Flask starts.
 os.system('fuser -k 5000/tcp > /dev/null 2>&1')
-
-# Add server directory to path
+import sys
+import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'server')))
+
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
-from config import db, configure_app
-from server.models import User, Vehicle, Route, Booking
+from flask import Flask, request, redirect, render_template, flash, url_for, send_from_directory
+from flask import current_app
 from server.models.fleet import Fleet
+from server.models.route import Route
+from flask_login import current_user
+from server.models import User, Vehicle, Route, Booking  # Adjust based on your structure
+from flask_login import LoginManager, login_user, logout_user, login_required
+from config import configure_app, TestingConfig
+from flask_migrate import Migrate
 
 app = Flask(__name__, static_folder="Client", static_url_path="/")
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
 app.secret_key = os.environ.get('SECRET_KEY') or 'your_secret_key'
 
-# Configure and initialize extensions
+from config import configure_app
 configure_app(app)
+
+from config import db
 db.init_app(app)
 Migrate(app, db)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = "login"
-
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
-
-@app.route("/")
-def index():
-    return send_from_directory("Client", "index.html")
-
-@app.route('/client/<path:filename>')
-def serve_static_client(filename):
-    return send_from_directory('Client', filename)
+login_manager.login_view = "login"
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -52,21 +50,31 @@ def login():
                 login_user(user)
                 flash("Login successful!", "success")
 
+                # Redirect based on user role
                 if user.role == 'admin':
                     return redirect(url_for('admin_dashboard'))
                 elif user.role == 'employee':
                     return redirect("/dashboard_employee.html")
-                else:
+                else:  # default to passenger
                     return redirect("/index.html")
 
             flash("Invalid username or password", "error")
             return redirect("/login")
 
+        print(current_app.config['SQLALCHEMY_DATABASE_URI'])
         return send_from_directory("Client", "login.html")
     except Exception as e:
-        print("\u274c Login error:", e)
+        print("❌ Login error:", e)
         traceback.print_exc()
         return "Login failed", 500
+
+@app.route("/")
+def index():
+    return send_from_directory("Client", "index.html")
+
+@app.route('/client/<path:filename>')
+def serve_static_client(filename):
+    return send_from_directory('Client', filename)
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -87,6 +95,7 @@ def register():
         flash("Registration successful. You can now log in.", "success")
         return redirect("/login")
 
+
     return send_from_directory("Client", "register.html")
 
 @app.route("/dashboard_employee.html")
@@ -100,10 +109,32 @@ def employee_dashboard():
 @app.route("/dashboard_passenger.html")
 @login_required
 def passenger_dashboard():
-  if current_user.role != 'passenger':
-    flash("Unauthorized access", "error")
-    return redirect("/")
-  return send_from_directory("Client", "dashboard_passenger.html")
+    if current_user.role != 'passenger':
+        flash("Unauthorized access", "error")
+        return redirect("/")
+    return send_from_directory("Client", "dashboard_passenger.html")
+
+@app.route('/booking', methods=['POST'])
+def booking():
+    if request.method == 'POST':
+        print(f"Request method: {request.method}")
+        print(f"Form data: {request.form}")
+        route = request.form.get('route')
+        pickup = request.form.get('pickup')
+        dropoff = request.form.get('dropoff')
+        date = request.form.get('date')
+        time = request.form.get('time')
+        name = request.form.get('name')
+        contact = request.form.get('contact')
+
+        # Process the booking data (e.g., store in a database)
+        # For now, just print the data
+        print(f"Booking Details:\nRoute: {route}\nPickup: {pickup}\nDropoff: {dropoff}\nDate: {date}\nTime: {time}\nName: {name}\nContact: {contact}")
+
+        flash("Booking confirmed! You will receive a confirmation email shortly.", "success")
+        return redirect(url_for('index'))  # Redirect to the home page after booking
+    else:
+        return redirect(url_for('Booking'))  # Redirect to the booking page if accessed without submitting the form
 
 @app.route('/logout')
 @login_required
@@ -134,7 +165,7 @@ def add_fleet():
 @app.route('/admin/routes')
 @login_required
 def manage_routes():
-    routes = Route.query.all()
+    routes = Route.query.all()  # or just []
     return render_template('admin/ManageRoute.html', routes=routes)
 
 @app.route('/admin/fleet')
@@ -184,8 +215,9 @@ def add_route():
 
         flash("Route added successfully!")
         return redirect(url_for('manage_routes'))
+
     except Exception as e:
-        print("\ud83d\udea8 ERROR ADDING ROUTE:", e)
+        print("🚨 ERROR ADDING ROUTE:", e)
         return "Something went wrong: " + str(e), 500
 
 @app.route('/admin')
