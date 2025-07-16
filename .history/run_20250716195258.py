@@ -1,4 +1,4 @@
-import traceback
+ import traceback
 import os
 import sys
 from flask import Flask, request, redirect, render_template, flash, url_for, send_from_directory, current_app
@@ -65,7 +65,7 @@ def login():
             flash("Invalid username or password", "error")
             return redirect("/login")
 
-        return render_template("login.html")
+        return send_from_directory("Client", "login.html")
     except Exception as e:
         print("\u274c Login error:", e)
         traceback.print_exc()
@@ -103,10 +103,10 @@ def employee_dashboard():
 @app.route("/dashboard_passenger.html")
 @login_required
 def passenger_dashboard():
-    if current_user.role != 'passenger':
-        flash("Unauthorized access", "error")
-        return redirect("/")
-    return send_from_directory("Client", "dashboard_passenger.html")
+  if current_user.role != 'passenger':
+    flash("Unauthorized access", "error")
+    return redirect("/")
+  return send_from_directory("Client", "dashboard_passenger.html")
 
 @app.route('/logout')
 @login_required

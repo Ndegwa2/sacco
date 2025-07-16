@@ -65,7 +65,7 @@ def login():
             flash("Invalid username or password", "error")
             return redirect("/login")
 
-        return render_template("login.html")
+        return send_from_directory("Client", "login.html")
     except Exception as e:
         print("\u274c Login error:", e)
         traceback.print_exc()
