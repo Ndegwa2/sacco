@@ -17,6 +17,7 @@
   <div class="auth-container">
       <h2>Create Account</h2>
       <form method="POST" action="/register">
+        {{ csrf_token() }}
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" placeholder="Username" required>
         <label for="email">Email:</label>

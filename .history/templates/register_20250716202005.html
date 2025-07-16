@@ -8,16 +8,20 @@
 </head>
 <body>
   
-      <ul class="flashes">essages %}
-        {% for category, message in m
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <ul class="flashes">
+        {% for category, message in messages %}
           <li class="flash {{ category }}">{{ message }}</li>
         {% endfor %}
       </ul>
     {% endif %}
   {% endwith %}
+
   <div class="auth-container">
       <h2>Create Account</h2>
       <form method="POST" action="/register">
+        {{ csrf_token() }}
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" placeholder="Username" required>
         <label for="email">Email:</label>
