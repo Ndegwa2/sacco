@@ -15,10 +15,12 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 from config import db, configure_app
 from server.models import User, Vehicle, Route, Booking
 from server.models.fleet import Fleet
+from flask_wtf.csrf import CSRFProtect
 
 app = Flask(__name__, static_folder="Client", static_url_path="/")
 app.secret_key = os.environ.get('SECRET_KEY', None)
 
+csrf = CSRFProtect(app)
 
 # Configure and initialize extensions
 configure_app(app)

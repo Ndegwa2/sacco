@@ -19,6 +19,7 @@ from server.models.fleet import Fleet
 app = Flask(__name__, static_folder="Client", static_url_path="/")
 app.secret_key = os.environ.get('SECRET_KEY', None)
 
+csrf = CSRFProtect(app)
 
 # Configure and initialize extensions
 configure_app(app)
