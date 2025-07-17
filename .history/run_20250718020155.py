@@ -11,7 +11,6 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
 from config import db, configure_app
 from server.models import User, Vehicle, Route, Booking
-from server.models.user import SaccoMember
 from server.models.fleet import Fleet
 
 # Flask app initialization
@@ -211,30 +210,22 @@ def add_route():
 def fare_records():
     return render_template('admin/FareRecords.html')
 
+@app.route('/admin/sacco-members/add', methods=['GET', 'POST'])
+@login_required
+def add_sacco_member():
+    if request.method == 'POST':
+        # Handle the form submission
+        name = request.form.get('name')
+        email = request.form.get('email')
+        # etc... save to DB
 
-@app.route('/admin/sacco-members', methods=['GET', 'POST'])
+        return redirect(url_for('sacco_members'))  # after saving
+    return render_template('admin/add_sacco_member.html')  # if GET
+
+@app.route('/admin/sacco-members')
 @login_required
 def sacco_members():
-    if request.method == 'POST':
-        # Capture form data
-        full_name = request.form['full_name']
-        id_number = request.form['id_number']
-        email = request.form['email']
-        phone = request.form['phone']
-        shareholding = request.form['shareholding']
-
-        # Create and save new member
-        # Assuming SaccoMember is defined and imported correctly
-        new_member = SaccoMember(full_name=full_name, id_number=id_number,
-                                 email=email, phone=phone, shareholding=shareholding)
-        db.session.add(new_member)
-        db.session.commit()
-        
-        return redirect(url_for('sacco_members'))
-
-    # For GET request
-    members = SaccoMember.query.all()
-    return render_template('admin/sacco_members.html', members=members)
+    return redirect(url_for('add_sacco_member'))
 
 @app.route('/admin/staff')
 @login_required

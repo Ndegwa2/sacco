@@ -17,3 +17,11 @@ class User(UserMixin, db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+class SaccoMember(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    full_name = db.Column(db.String(150), nullable=False)
+    id_number = db.Column(db.String(50), nullable=False, unique=True)
+    email = db.Column(db.String(150), unique=True)
+    phone = db.Column(db.String(50))
+    shareholding = db.Column(db.Float)

@@ -11,7 +11,6 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
 from config import db, configure_app
 from server.models import User, Vehicle, Route, Booking
-from server.models.user import SaccoMember
 from server.models.fleet import Fleet
 
 # Flask app initialization
@@ -211,6 +210,17 @@ def add_route():
 def fare_records():
     return render_template('admin/FareRecords.html')
 
+@app.route('/admin/sacco-members/add', methods=['GET', 'POST'])
+@login_required
+def add_sacco_member():
+    if request.method == 'POST':
+        # Handle the form submission
+        name = request.form.get('name')
+        email = request.form.get('email')
+        # etc... save to DB
+
+        return redirect(url_for('sacco_members'))  # after saving
+    return render_template('admin/add_sacco_member.html')  # if GET
 
 @app.route('/admin/sacco-members', methods=['GET', 'POST'])
 @login_required

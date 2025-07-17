@@ -211,6 +211,7 @@ def add_route():
 def fare_records():
     return render_template('admin/FareRecords.html')
 
+# Removing the route
 
 @app.route('/admin/sacco-members', methods=['GET', 'POST'])
 @login_required
