@@ -2,6 +2,7 @@ import traceback
 import os
 import sys
 from flask import Flask, request, redirect, render_template, flash, url_for, send_from_directory
+from flask_wtf import CSRFProtect
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from flask_migrate import Migrate
 
@@ -21,6 +22,9 @@ app.secret_key = os.environ.get('SECRET_KEY', 'devkey')  # Fallback for local te
 configure_app(app)
 db.init_app(app)
 Migrate(app, db)
+
+# Initialize CSRF protection
+csrf = CSRFProtect(app)
 
 # Initialize database
 with app.app_context():
