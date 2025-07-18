@@ -250,7 +250,7 @@ def staff_management():
         status = request.form['status']
 
         # Create a new User object
-        new_staff = User(username=staff_id, email=contact, role=role, full_name=name, status=status)
+        new_staff = User(username=staff_id, email=contact, role=role)
         new_staff.set_password("default_password") # Set a default password
         db.session.add(new_staff)
         db.session.commit()
@@ -258,8 +258,7 @@ def staff_management():
         flash("Staff member added successfully!", "success")
         return redirect(url_for('staff_management'))
 
-    staff_members = User.query.all()
-    return render_template('admin/staff_management.html', staff=staff_members)
+    return render_template('admin/staff_management.html')
 
 @app.route('/admin/reports')
 @login_required

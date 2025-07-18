@@ -250,7 +250,7 @@ def staff_management():
         status = request.form['status']
 
         # Create a new User object
-        new_staff = User(username=staff_id, email=contact, role=role, full_name=name, status=status)
+        new_staff = User(username=staff_id, email=contact, role=role)
         new_staff.set_password("default_password") # Set a default password
         db.session.add(new_staff)
         db.session.commit()

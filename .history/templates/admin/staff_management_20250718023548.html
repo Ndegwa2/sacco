@@ -63,23 +63,18 @@
           </tr>
         </thead>
         <tbody>
-          {% for member in staff %}
+          <!-- Sample Staff -->
           <tr>
-            <td style="padding: 1rem; border-bottom: 1px solid #e0e0e0;">{{ member.full_name }}</td>
-            <td style="padding: 1rem; border-bottom: 1px solid #e0e0e0;">{{ member.username }}</td>
-            <td style="padding: 1rem; border-bottom: 1px solid #e0e0e0;">{{ member.role }}</td>
-            <td style="padding: 1rem; border-bottom: 1px solid #e0e0e0;">{{ member.email }}</td>
-            <td style="padding: 1rem; border-bottom: 1px solid #e0e0e0;">{{ member.status }}</td>
+            <td style="padding: 1rem; border-bottom: 1px solid #e0e0e0;">John Mwangi</td>
+            <td style="padding: 1rem; border-bottom: 1px solid #e0e0e0;">STF123</td>
+            <td style="padding: 1rem; border-bottom: 1px solid #e0e0e0;">Driver</td>
+            <td style="padding: 1rem; border-bottom: 1px solid #e0e0e0;">0712 345 678</td>
+            <td style="padding: 1rem; border-bottom: 1px solid #e0e0e0;"><span class="badge active" style="background-color: #00bfa5; color: white; padding: 0.4rem 0.9rem; border-radius: 20px; font-size: 0.85rem;">Active</span></td>
             <td>
               <button class="edit-btn" style="padding: 0.45rem 0.9rem; font-size: 0.95rem; border: none; border-radius: 5px; cursor: pointer; margin-right: 0.4rem; transition: opacity 0.3s ease; background-color: #42a5f5; color: white;">Edit</button>
               <button class="delete-btn" style="padding: 0.45rem 0.9rem; font-size: 0.95rem; border: none; border-radius: 5px; cursor: pointer; margin-right: 0.4rem; transition: opacity 0.3s ease; background-color: #ef5350; color: white;">Delete</button>
             </td>
           </tr>
-          {% else %}
-          <tr>
-            <td colspan="5">No staff members found.</td>
-          </tr>
-          {% endfor %}
         </tbody>
       </table>
     </section>
