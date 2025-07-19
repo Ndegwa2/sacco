@@ -96,6 +96,8 @@
 </head>
 <body>
   <h1>Assigned Routes</h1>
+  <a href="{{ url_for('export_assigned_routes') }}" class="dashboard-btn" style="margin-bottom: 20px; display: inline-block;">⬇️ Export as CSV</a>
+
   <div class="filter-bar">
     <input type="text" placeholder="Search by Route Name">
     <select>
@@ -103,7 +105,7 @@
       <option>Pending</option>
       <option>Completed</option>
     </select>
-    <a href="{{ url_for('export_assigned_routes') }}" class="export-btn">Export CSV</a>
+    <button class="export-btn">Export CSV</button>
   </div>
 
   <table>

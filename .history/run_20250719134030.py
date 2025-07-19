@@ -81,7 +81,6 @@ def login():
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
-        full_name = request.form.get("full_name")
         username = request.form.get("username")
         email = request.form.get("email")
         password = request.form.get("password")
@@ -91,7 +90,7 @@ def register():
             flash("Username already taken.", "error")
             return redirect("/register")
 
-        user = User(username=username, email=email, role=role, full_name=full_name)
+        user = User(username=username, email=email, role=role)
         user.set_password(password)
         db.session.add(user)
         db.session.commit()
@@ -252,14 +251,14 @@ def sacco_members():
 def staff_management():
     if request.method == 'POST':
         # Capture form data
-        full_name = request.form['full_name']
+        name = request.form['name']
         staff_id = request.form['staff_id']
         role = request.form['role']
         contact = request.form['contact']
         status = request.form['status']
 
         # Create a new User object
-        new_staff = User(username=staff_id, email=contact, role=role, full_name=full_name, status=status)
+        new_staff = User(username=staff_id, email=contact, role=role, full_name=name, status=status)
         new_staff.set_password("default_password") # Set a default password
         db.session.add(new_staff)
         db.session.commit()

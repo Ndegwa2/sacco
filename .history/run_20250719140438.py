@@ -81,7 +81,6 @@ def login():
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
-        full_name = request.form.get("full_name")
         username = request.form.get("username")
         email = request.form.get("email")
         password = request.form.get("password")
@@ -91,7 +90,7 @@ def register():
             flash("Username already taken.", "error")
             return redirect("/register")
 
-        user = User(username=username, email=email, role=role, full_name=full_name)
+        user = User(username=username, email=email, role=role)
         user.set_password(password)
         db.session.add(user)
         db.session.commit()
