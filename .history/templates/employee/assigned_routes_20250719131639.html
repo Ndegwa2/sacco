@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Assigned Routes</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f8fb;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      background-color: #0077cc;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+      margin: 0;
+      font-size: 2rem;
+      letter-spacing: 1px;
+    }
+
+    table {
+      width: 80%;
+      margin: 2rem auto;
+      border-collapse: collapse;
+      background-color: #ffffff;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 1rem;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #e6f0ff;
+      color: #333;
+      font-weight: 600;
+    }
+
+    tr:hover {
+      background-color: #f1f7ff;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    @media (max-width: 768px) {
+      table {
+        width: 95%;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      th, td {
+        padding: 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Assigned Routes</h1>
+  <table>
+    <tr>
+      <th>Route ID</th>
+      <th>Date Assigned</th>
+    </tr>
+    {% for route in assignments %}
+    <tr>
+      <td>{{ route.route_id }}</td>
+      <td>{{ route.date_assigned.strftime('%Y-%m-%d') }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</body>
+</html>
