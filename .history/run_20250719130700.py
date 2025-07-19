@@ -280,6 +280,10 @@ def reports():
 def serve_static_client(filename):
     return send_from_directory('Client', filename)
 
+# ------------------ RUN THE APP ------------------
+
+if __name__ == "__main__":
+    app.run(debug=True)
 
 @app.route('/employee/assigned-routes')
 @login_required
@@ -289,9 +293,3 @@ def view_assigned_routes():
 
     assignments = AssignedRoute.query.filter_by(employee_id=current_user.id).all()
     return render_template('employee/assigned_routes.html', assigned_routes=assignments)
-# ------------------ RUN THE APP ------------------
-
-if __name__ == "__main__":
-    app.run(debug=True)
-
-

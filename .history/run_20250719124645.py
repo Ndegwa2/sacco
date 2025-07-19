@@ -130,7 +130,7 @@ def employee_dashboard():
     if current_user.role != 'employee':
         flash("Unauthorized access", "error")
         return redirect("/")
-    return render_template("employee/dashboard_employee.html")
+    return send_from_directory("Client", "dashboard_employee.html")
 
 @app.route("/dashboard_passenger.html")
 @login_required
@@ -280,18 +280,7 @@ def reports():
 def serve_static_client(filename):
     return send_from_directory('Client', filename)
 
-
-@app.route('/employee/assigned-routes')
-@login_required
-def view_assigned_routes():
-    if current_user.role != 'employee':
-        return redirect(url_for('login'))
-
-    assignments = AssignedRoute.query.filter_by(employee_id=current_user.id).all()
-    return render_template('employee/assigned_routes.html', assigned_routes=assignments)
 # ------------------ RUN THE APP ------------------
 
 if __name__ == "__main__":
     app.run(debug=True)
-
-
