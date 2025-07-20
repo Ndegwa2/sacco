@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Summary</title>
+    <style>
+        .button {
+            background-color: #1a73e8;
+            color: white;
+            padding: 10px 20px;
+            margin: 1rem 0;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+        }
+
+        .button:hover {
+            background-color: #155ab6;
+        }
+    </style>
+</head>
+<body>
+    <h1>Payment Summary</h1>
+
+    <div class="payment-summary">
+        <p>Employee ID: {{ payment_summary.employee_id }}</p>
+        <p>Total Trips: {{ payment_summary.total_trips }}</p>
+        <p>Total Fare Collected: ${{ payment_summary.total_fare_collected }}</p>
+        <p>Commission Earned: ${{ payment_summary.commission_earned }}</p>
+        <p>Number of Payments: {{ payment_summary.num_payments }}</p>
+    </div>
+
+    <a href="/logout" class="button">Logout</a>
+</body>
+</html>

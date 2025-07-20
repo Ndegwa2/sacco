@@ -173,27 +173,27 @@ def view_payment_summary():
         'commission_earned': commission_earned,
         'num_payments': len(payments)
     }
+return render_template('employee/payment_summary.html', payment_summary=payment_summary)
+
 @app.route('/employee/payment_summary/export')
 @login_required
 def export_payment_csv():
-    payments = EmployeePayment.query.filter_by(employee_id=current_user.id).all()
+payments = EmployeePayment.query.filter_by(employee_id=current_user.id).all()
 
-    # Create CSV in memory
-    def generate():
-        data = csv.writer()
-        yield ','.join(['Date', 'Trips', 'Fare Collected (KES)', 'Commission (KES)', 'Status']) + '\n'
-        for p in payments:
-            yield f"{p.payment_date},{p.total_trips},{p.total_fare_collected},{p.commission_earned},{p.payment_status}\n"
+# Create CSV in memory
+def generate():
+    data = csv.writer()
+    yield ','.join(['Date', 'Trips', 'Fare Collected (KES)', 'Commission (KES)', 'Status']) + '\n'
+    for p in payments:
+        yield f"{p.payment_date},{p.total_trips},{p.total_fare_collected},{p.commission_earned},{p.payment_status}\n"
 
-    return Response(
-        generate(),
-        mimetype='text/csv',
-        headers={
-            'Content-Disposition': 'attachment; filename=payment_summary.csv'
-        }
-    )
-
-    return render_template('employee/payment_summary.html', payment_summary=payment_summary)
+return Response(
+    generate(),
+    mimetype='text/csv',
+    headers={
+        'Content-Disposition': 'attachment; filename=payment_summary.csv'
+    }
+)
 
 @app.route("/dashboard_passenger.html")
 @login_required

@@ -1,11 +1,8 @@
 import traceback
 import os
 import sys
-from flask import Flask, request, redirect, render_template, flash, url_for, send_from_directory, Response
+from flask import Flask, request, redirect, render_template, flash, url_for, send_from_directory
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
-import csv
-from server.models.employee_payment import EmployeePayment
-from flask_login import current_user
 from flask_migrate import Migrate
 
 # Extend system path for imports
@@ -173,25 +170,6 @@ def view_payment_summary():
         'commission_earned': commission_earned,
         'num_payments': len(payments)
     }
-@app.route('/employee/payment_summary/export')
-@login_required
-def export_payment_csv():
-    payments = EmployeePayment.query.filter_by(employee_id=current_user.id).all()
-
-    # Create CSV in memory
-    def generate():
-        data = csv.writer()
-        yield ','.join(['Date', 'Trips', 'Fare Collected (KES)', 'Commission (KES)', 'Status']) + '\n'
-        for p in payments:
-            yield f"{p.payment_date},{p.total_trips},{p.total_fare_collected},{p.commission_earned},{p.payment_status}\n"
-
-    return Response(
-        generate(),
-        mimetype='text/csv',
-        headers={
-            'Content-Disposition': 'attachment; filename=payment_summary.csv'
-        }
-    )
 
     return render_template('employee/payment_summary.html', payment_summary=payment_summary)
 

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Summary</title>
+</head>
+<body>
+    <h1>Payment Summary</h1>
+
+    <div class="payment-summary">
+        <p>Employee ID: {{ payment_summary.employee_id }}</p>
+        <p>Total Earnings: ${{ payment_summary.total_earnings }}</p>
+        <p>Number of Payments: {{ payment_summary.num_payments }}</p>
+    </div>
+
+    <a href="/logout">Logout</a>
+</body>
+</html>

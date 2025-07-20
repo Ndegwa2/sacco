@@ -1,0 +1,13 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/payment_summary.css') }}">
+
+<h2>Payment Summary</h2>
+
+<div class="summary-container">
+    <p><strong>Employee ID:</strong> {{ current_user.id }}</p>
+    <p><strong>Total Trips:</strong> {{ total_trips }}</p>
+    <p><strong>Total Fare Collected:</strong> KES {{ total_fare }}</p>
+    <p><strong>Commission Earned:</strong> KES {{ commission }}</p>
+    <p><strong>Number of Payments:</strong> {{ payments|length }}</p>
+
+    <a href="{{ url_for('logout') }}" class="button">Logout</a>
+</div>

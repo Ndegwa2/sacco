@@ -173,6 +173,9 @@ def view_payment_summary():
         'commission_earned': commission_earned,
         'num_payments': len(payments)
     }
+return render_template('employee/payment_summary.html', payment_summary=payment_summary)
+
+
 @app.route('/employee/payment_summary/export')
 @login_required
 def export_payment_csv():
@@ -192,9 +195,6 @@ def export_payment_csv():
             'Content-Disposition': 'attachment; filename=payment_summary.csv'
         }
     )
-
-    return render_template('employee/payment_summary.html', payment_summary=payment_summary)
-
 @app.route("/dashboard_passenger.html")
 @login_required
 def passenger_dashboard():

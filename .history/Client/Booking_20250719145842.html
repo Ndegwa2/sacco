@@ -23,9 +23,13 @@
   <section class="booking-section">
     <div class="booking-box">
       <h2>Book Your Trip</h2>
-    
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
             <script>alert("{{ message }}");</script>
-    
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
       <form action="/booking" method="POST">
 
         <label for="route">Select Route</label>

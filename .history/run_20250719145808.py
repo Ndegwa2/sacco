@@ -1,11 +1,8 @@
 import traceback
 import os
 import sys
-from flask import Flask, request, redirect, render_template, flash, url_for, send_from_directory, Response
+from flask import Flask, request, redirect, render_template, flash, url_for, send_from_directory
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
-import csv
-from server.models.employee_payment import EmployeePayment
-from flask_login import current_user
 from flask_migrate import Migrate
 
 # Extend system path for imports
@@ -13,7 +10,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'serv
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
 from config import db, configure_app
-from server.models import User, Vehicle, Route, Booking, EmployeePayment
+from server.models import User, Vehicle, Route, Booking
 from server.models.user import SaccoMember
 from server.models.fleet import Fleet
 from server.models.route_assignment import AssignedRoute
@@ -121,8 +118,8 @@ def booking():
             route=route,
             pickup=pickup,
             dropoff=dropoff,
-            date=travel_date,
-            time=travel_time,
+            travel_date=travel_date,
+            travel_time=travel_time,
             name=name,
             contact=contact,
             status="confirmed"  # NEW!
@@ -131,7 +128,7 @@ def booking():
         db.session.commit()
 
         flash("Booking confirmed! You’ll receive details shortly.", "success")
-        return render_template('Client/Booking.html')
+        return render_template('Booking.html')
 
     return render_template('booking.html')
 
@@ -146,54 +143,6 @@ def employee_dashboard():
         flash("Unauthorized access", "error")
         return redirect("/")
     return render_template("employee/dashboard_employee.html")
-
-@app.route("/employee/payment-summary")
-@login_required
-def view_payment_summary():
-    if current_user.role != 'employee':
-        flash("Unauthorized access", "error")
-        return redirect(url_for('login'))
-
-    employee_id = current_user.id
-    payments = EmployeePayment.query.filter_by(employee_id=employee_id).all()
-
-    total_trips = 0
-    total_fare_collected = 0
-    commission_earned = 0
-
-    for payment in payments:
-        total_trips += payment.total_trips if payment.total_trips else 0
-        total_fare_collected += payment.total_fare_collected if payment.total_fare_collected else 0
-        commission_earned += payment.commission_earned if payment.commission_earned else 0
-
-    payment_summary = {
-        'employee_id': employee_id,
-        'total_trips': total_trips,
-        'total_fare_collected': total_fare_collected,
-        'commission_earned': commission_earned,
-        'num_payments': len(payments)
-    }
-@app.route('/employee/payment_summary/export')
-@login_required
-def export_payment_csv():
-    payments = EmployeePayment.query.filter_by(employee_id=current_user.id).all()
-
-    # Create CSV in memory
-    def generate():
-        data = csv.writer()
-        yield ','.join(['Date', 'Trips', 'Fare Collected (KES)', 'Commission (KES)', 'Status']) + '\n'
-        for p in payments:
-            yield f"{p.payment_date},{p.total_trips},{p.total_fare_collected},{p.commission_earned},{p.payment_status}\n"
-
-    return Response(
-        generate(),
-        mimetype='text/csv',
-        headers={
-            'Content-Disposition': 'attachment; filename=payment_summary.csv'
-        }
-    )
-
-    return render_template('employee/payment_summary.html', payment_summary=payment_summary)
 
 @app.route("/dashboard_passenger.html")
 @login_required
