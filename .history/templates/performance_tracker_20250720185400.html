@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Performance Tracker</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles/performance_tracker.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="main-container">
+    <div class="card">
+      <h2 class="card-title">Performance Tracker</h2>
+
+      <div class="summary-cards">
+        <div class="card-stat">
+          <p class="stat-label">Total Trips</p>
+          <p class="stat-value">{{ summary.total_trips }}</p>
+        </div>
+        <div class="card-stat">
+          <p class="stat-label">Total Fare Collected</p>
+          <p class="stat-value">KES {{ summary.total_fare }}</p>
+        </div>
+        <div class="card-stat">
+          <p class="stat-label">Avg Fare per Trip</p>
+          <p class="stat-value">KES {{ summary.avg_fare }}</p>
+        </div>
+        <div class="card-stat">
+          <p class="stat-label">Top Route</p>
+          <p class="stat-value">{{ summary.top_route }}</p>
+        </div>
+      </div>
+
+      <div class="chart-section">
+        <h3>Trips Over Time</h3>
+        <canvas id="tripsChart"></canvas>
+      </div>
+
+      <div class="actions">
+        <a href="{{ url_for('export_performance_csv') }}" class="button">⬇ Export CSV</a>
+      </div>
+
+      <table class="summary-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Trips</th>
+            <th>Fare Collected</th>
+            <th>Commission</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in table_rows %}
+          <tr>
+            <td>{{ row.date }}</td>
+            <td>{{ row.trips }}</td>
+            <td>KES {{ row.fare }}</td>
+            <td>KES {{ row.commission }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    const ctx = document.getElementById('tripsChart');
+    const tripsChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: {{ weekly_data | map(attribute='week') | list }},
+        datasets: [{
+          label: 'Trips Completed',
+          data: {{ weekly_data | map(attribute='trips') | list }},
+          borderColor: '#1b4d1b',
+          backgroundColor: 'rgba(27, 77, 27, 0.1)',
+          tension: 0.3,
+          fill: true
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

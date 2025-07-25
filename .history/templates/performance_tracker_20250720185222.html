@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Performance Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Performance Tracker</h1>
+
+    <div class="summary-cards">
+        <div class="card">
+            <h2>Total Trips</h2>
+            <p>{{ summary.total_trips }}</p>
+        </div>
+        <div class="card">
+            <h2>Total Fare</h2>
+            <p>{{ summary.total_fare }}</p>
+        </div>
+        <div class="card">
+            <h2>Avg Fare</h2>
+            <p>{{ summary.avg_fare }}</p>
+        </div>
+        <div class="card">
+            <h2>Top Route</h2>
+            <p>{{ summary.top_route }}</p>
+        </div>
+    </div>
+
+    <div class="chart">
+        <h2>Trip Count Over Time</h2>
+        <!-- Chart will be rendered here -->
+    </div>
+
+    <div class="table">
+        <h2>Detailed Trip Data</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Trips</th>
+                    <th>Fare Collected</th>
+                    <th>Commission</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in table_rows %}
+                <tr>
+                    <td>{{ row.date }}</td>
+                    <td>{{ row.trips }}</td>
+                    <td>{{ row.fare }}</td>
+                    <td>{{ row.commission }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="export">
+        <button>Export CSV</button>
+        <button>Back to Dashboard</button>
+    </div>
+</body>
+</html>
