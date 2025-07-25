@@ -129,12 +129,9 @@ def booking():
         )
         db.session.add(new_booking)
         db.session.commit()
-        
-        # Redirect to confirmation page after successful booking
-        return redirect(url_for('confirmation'))
 
-    # For GET requests, serve the static Booking.html file from Client directory
-    return send_from_directory("Client", "Booking.html")
+
+    return render_template('booking.html')
 
 @app.route("/confirmation")
 def confirmation():
