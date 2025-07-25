@@ -166,11 +166,11 @@ pytest server/tests/
 
 ## License
 
-[Specify your license here]
+
 
 ## Contributors
 
-[List of contributors]
+Samuel Ndegwa.
 
 ## Contact
 
