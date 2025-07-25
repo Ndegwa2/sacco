@@ -53,6 +53,10 @@ def load_user(user_id):
 def index():
     return send_from_directory("Client", "index.html")
 
+@app.route("/Client/<path:filename>")
+def serve_client_files(filename):
+    return send_from_directory("Client", filename)
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     try:
@@ -68,9 +72,9 @@ def login():
                 if user.role == 'admin':
                     return redirect(url_for('admin_dashboard'))
                 elif user.role == 'employee':
-                    return redirect("/dashboard_employee.html")
+                    return redirect(url_for('employee_dashboard'))
                 else:
-                    return redirect("/index.html")
+                    return redirect(url_for('index'))
 
             flash("Invalid username or password", "error")
             return redirect("/login")
@@ -134,7 +138,7 @@ def booking():
         return redirect(url_for('confirmation'))
 
     # For GET requests, serve the static Booking.html file from Client directory
-    return send_from_directory("Client", "Booking.html")
+    return redirect(url_for('serve_client_files', filename="Booking.html"))
 
 @app.route("/confirmation")
 def confirmation():
@@ -207,7 +211,7 @@ def passenger_dashboard():
     if current_user.role != 'passenger':
         flash("Unauthorized access", "error")
         return redirect("/")
-    return send_from_directory("Client", "dashboard_passenger.html")
+    return redirect(url_for('serve_client_files', filename="dashboard_passenger.html"))
 
 @app.route('/logout')
 @login_required

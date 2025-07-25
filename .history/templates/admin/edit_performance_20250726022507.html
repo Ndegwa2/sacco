@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>NaiSmart | Add Performance Record</title>
+  <title>NaiSmart | Edit Performance Record</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/static/styles/performance_tracker.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles/performance_tracker.css') }}">
   <style>
     .form-container {
       max-width: 600px;
@@ -44,38 +44,40 @@
 <body>
   <div class="main-container">
     <div class="card">
-      <h2 class="card-title">Add Performance Record</h2>
+      <h2 class="card-title">Edit Performance Record</h2>
       
       <div class="form-container">
-        <form method="POST" action="{{ url_for('admin_add_performance') }}">
+        <form method="POST" action="{{ url_for('admin_edit_performance', performance_id=performance.id) }}">
           <div class="form-group">
             <label for="employee_id">Employee</label>
             <select name="employee_id" id="employee_id" required>
               <option value="">Select Employee</option>
               {% for employee in employees %}
-              <option value="{{ employee.id }}">{{ employee.full_name }}</option>
+              <option value="{{ employee.id }}" {% if employee.id == performance.employee_id %}selected{% endif %}>
+                {{ employee.full_name }}
+              </option>
               {% endfor %}
             </select>
           </div>
           
           <div class="form-group">
             <label for="date">Date</label>
-            <input type="date" name="date" id="date" required value="{{ today }}">
+            <input type="date" name="date" id="date" required value="{{ performance.date.strftime('%Y-%m-%d') }}">
           </div>
           
           <div class="form-group">
             <label for="trips">Number of Trips</label>
-            <input type="number" name="trips" id="trips" min="0" required>
+            <input type="number" name="trips" id="trips" min="0" required value="{{ performance.trips }}">
           </div>
           
           <div class="form-group">
             <label for="fare_collected">Fare Collected (KES)</label>
-            <input type="number" name="fare_collected" id="fare_collected" min="0" step="0.01" required>
+            <input type="number" name="fare_collected" id="fare_collected" min="0" step="0.01" required value="{{ performance.fare_collected }}">
           </div>
           
           <div class="form-group">
             <label for="commission">Commission (KES)</label>
-            <input type="number" name="commission" id="commission" min="0" step="0.01" required>
+            <input type="number" name="commission" id="commission" min="0" step="0.01" required value="{{ performance.commission }}">
           </div>
           
           <div class="form-group">
@@ -83,14 +85,16 @@
             <select name="route" id="route">
               <option value="">Select Route</option>
               {% for route in routes %}
-              <option value="{{ route.route_name }}">{{ route.route_name }} ({{ route.origin }} - {{ route.destination }})</option>
+              <option value="{{ route.route_name }}" {% if route.route_name == performance.route %}selected{% endif %}>
+                {{ route.route_name }} ({{ route.origin }} - {{ route.destination }})
+              </option>
               {% endfor %}
             </select>
           </div>
           
           <div class="button-group">
             <a href="{{ url_for('admin_performance_tracker') }}" class="button cancel-button">Cancel</a>
-            <button type="submit" class="button">Save Record</button>
+            <button type="submit" class="button">Update Record</button>
           </div>
         </form>
       </div>

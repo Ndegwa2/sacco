@@ -19,7 +19,7 @@ from server.models.fleet import Fleet
 from server.models.route_assignment import AssignedRoute
 
 # Flask app initialization
-app = Flask(__name__, static_folder="Client", static_url_path="/")
+app = Flask(__name__, static_folder="static", static_url_path="/static")
 app.secret_key = os.environ.get('SECRET_KEY', 'devkey')  # Fallback for local testing
 
 # Configure and initialize extensions
@@ -53,6 +53,10 @@ def load_user(user_id):
 def index():
     return send_from_directory("Client", "index.html")
 
+@app.route("/Client/<path:filename>")
+def serve_client_files(filename):
+    return send_from_directory("Client", filename)
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     try:
@@ -68,9 +72,9 @@ def login():
                 if user.role == 'admin':
                     return redirect(url_for('admin_dashboard'))
                 elif user.role == 'employee':
-                    return redirect("/dashboard_employee.html")
+                    return redirect(url_for('employee_dashboard'))
                 else:
-                    return redirect("/index.html")
+                    return redirect(url_for('index'))
 
             flash("Invalid username or password", "error")
             return redirect("/login")

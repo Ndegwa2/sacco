@@ -19,7 +19,7 @@ from server.models.fleet import Fleet
 from server.models.route_assignment import AssignedRoute
 
 # Flask app initialization
-app = Flask(__name__, static_folder="Client", static_url_path="/")
+app = Flask(__name__, static_folder="static", static_url_path="/static")
 app.secret_key = os.environ.get('SECRET_KEY', 'devkey')  # Fallback for local testing
 
 # Configure and initialize extensions
@@ -358,7 +358,7 @@ def add_fleet():
     db.session.commit()
 
     flash("Vehicle added successfully!")
-    return redirect(url_for('fleet_management'))
+    return redirect(url_for('serve_static_client', filename='admin/FleetManagement.html'))
 
 @app.route('/admin/routes')
 @login_required

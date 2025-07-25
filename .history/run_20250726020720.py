@@ -19,7 +19,7 @@ from server.models.fleet import Fleet
 from server.models.route_assignment import AssignedRoute
 
 # Flask app initialization
-app = Flask(__name__, static_folder="Client", static_url_path="/")
+app = Flask(__name__, static_folder="static", static_url_path="/static")
 app.secret_key = os.environ.get('SECRET_KEY', 'devkey')  # Fallback for local testing
 
 # Configure and initialize extensions
@@ -52,6 +52,10 @@ def load_user(user_id):
 @app.route("/")
 def index():
     return send_from_directory("Client", "index.html")
+
+@app.route("/Client/<path:filename>")
+def serve_client_files(filename):
+    return send_from_directory("Client", filename)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
