@@ -10,7 +10,7 @@ db = SQLAlchemy()
 # App configuration function
 def configure_app(app):
     app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'Ndegwa_Sacco')
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost/sacco_system'
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'mysql+pymysql://username:password@hostname:3306/dbname')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 class TestingConfig:
