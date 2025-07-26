@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vehicle Health Check - NaiSmart</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f3fdf5;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    header {
+      background-color: #2e7d32;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2rem;
+      letter-spacing: 1px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .card {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid #e0e0e0;
+      padding-bottom: 1rem;
+    }
+
+    .card-header h2 {
+      margin: 0;
+      color: #2e7d32;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #2e7d32;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 0.8rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-col {
+      flex: 1;
+    }
+
+    .btn {
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .btn-primary {
+      background-color: #2e7d32;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: #1b5e20;
+    }
+
+    .btn-secondary {
+      background-color: #757575;
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background-color: #616161;
+    }
+
+    .btn-container {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+    }
+
+    .alert {
+      padding: 1rem;
+      border-radius: 5px;
+      margin-bottom: 1.5rem;
+    }
+
+    .alert-success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .alert-danger {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    .nav-links {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+    }
+
+    .nav-links a {
+      color: #2e7d32;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .nav-links a:hover {
+      text-decoration: underline;
+    }
+
+    .rating-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .rating-row {
+      display: flex;
+      align-items: center;
+    }
+
+    .rating-label {
+      width: 150px;
+      font-weight: 600;
+    }
+
+    .rating-options {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .rating-option {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .rating-option input[type="radio"] {
+      width: auto;
+    }
+
+    .section-title {
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      color: #2e7d32;
+      border-bottom: 1px solid #a5d6a7;
+      padding-bottom: 0.5rem;
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      width: auto;
+    }
+
+    .history-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+
+    .history-table th, .history-table td {
+      padding: 0.8rem;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .history-table th {
+      background-color: #a5d6a7;
+      color: #2e7d32;
+      font-weight: 600;
+    }
+
+    .history-table tr:hover {
+      background-color: #e8f5e9;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 0.3rem 0.6rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .status-good {
+      background-color: #c8e6c9;
+      color: #2e7d32;
+    }
+
+    .status-fair {
+      background-color: #fff9c4;
+      color: #f57f17;
+    }
+
+    .status-poor {
+      background-color: #ffcdd2;
+      color: #d32f2f;
+    }
+
+    @media (max-width: 768px) {
+      .form-row {
+        flex-direction: column;
+        gap: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Vehicle Health Check</h1>
+  </header>
+
+  <div class="container">
+    <div class="nav-links">
+      <a href="{{ url_for('employee_dashboard') }}">&larr; Back to Dashboard</a>
+      <a href="{{ url_for('driver_log') }}">Daily Driver Log</a>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <div class="card">
+      <div class="card-header">
+        <h2>Vehicle Health Check Form</h2>
+        <span>{{ current_date }}</span>
+      </div>
+
+      <form action="{{ url_for('submit_vehicle_health') }}" method="POST">
+        <div class="form-row">
+          <div class="form-col">
+            <div class="form-group">
+              <label for="vehicle_id">Vehicle</label>
+              <select name="vehicle_id" id="vehicle_id" required>
+                <option value="">Select Vehicle</option>
+                {% for vehicle in vehicles %}
+                <option value="{{ vehicle.id }}">{{ vehicle.plate_number }} ({{ vehicle.vehicle_model }})</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="section-title">Vehicle Condition</h3>
+        
+        <div class="rating-group">
+          <div class="rating-row">
+            <span class="rating-label">Engine Condition:</span>
+            <div class="rating-options">
+              <div class="rating-option">
+                <input type="radio" id="engine_1" name="engine_condition" value="1">
+                <label for="engine_1">1 (Poor)</label>
+              </div>
+              <div class="rating-option">
+                <input type="radio" id="engine_2" name="engine_condition" value="2">
+                <label for="engine_2">2</label>
+              </div>
+              <div class="rating-option">
+                <input type="radio" id="engine_3" name="engine_condition" value="3">
+                <label for="engine_3">3</label>
+              </div>
+              <div class="rating-option">
+                <input type="radio" id="engine_4" name="engine_condition" value="4">
+                <label for="engine_4">4</label>
+              </div>
+              <div class="rating-option">
+                <input type="radio" id="engine_5" name="engine_condition" value="5" checked>
+                <label for="engine_5">5 (Excellent)</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="rating-row">
+            <span class="rating-label">Brake Condition:</span>
+            <div class="rating-options">
+              <div class="rating-option">
+                <input type="radio" id="brake_1" name="brake_condition" value="1">
+                <label for="brake_1">1 (Poor)</label>
+              </div>
+              <div class="rating-option">
+                <input type="radio" id="brake_2" name="brake_condition" value="2">
+                <label for="brake_2">2</label>
+              </div>
+              <div class="rating-option">
+                <input type="radio" id="brake_3" name="brake_condition" value="3">
+                <label for="brake_3">3</label>
+              </div>
+              <div class="rating-option">
+                <input type="radio" id="brake_4" name="brake_condition" value="4">
+                <label for="brake_4">4</label>
+              </div>
+              <div class="rating-option">
+                <input type="radio" id="brake_5" name="brake_condition" value="5" checked>
+                <label for="brake_5">5 (Excellent)</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="rating-row">
+            <span class="rating-label">Tire Condition:</span>
+            <div class="rating-options">
+              <div class="rating-option">
+                <input type="radio" id="tire_1" name="tire_condition" value="1">
+                <label for="tire_1">1 (Poor)</label>
+              </div>
+              <div class="rating-option">
+                <input type="radio" id="tire_2" name="tire_condition" value="2">
+                <label for="tire_2">2</label>
+              </div>
+              <div class="rating-option">
+                <input type="radio" id="tire_3" name="tire_condition" value="3">
+                <label for="tire_3">3</label>
+              </div>
+              <div class="rating-option">
+                <input type="radio" id="tire_4" name="tire_condition" value="4">
+                <label for="tire_4">4</label>
+              </div>
+              <div class="rating-option">
+                <input type="radio" id="tire_5" name="tire_condition" value="5" checked>
+                <label for="tire_5">5 (Excellent)</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="rating-row">
+            <span class="rating-label">Lights Condition:</span>
+            <div class="rating-options">
+              <div class="rating-option">
+                <input type="radio" id="lights_1" name="lights_condition" value="1">
+                <label for="lights_1">1 (Poor)</label>
+              </div>
+              <div class="rating-option">
+                <input type="radio" id="lights_2" name="lights_condition" value="2">
+                <label for="lights_2">2</label>
+              </div>
+              <div class="rating-option">
+                <input type="radio" id="lights_3" name="lights_condition" value="3">
+                <label for="lights_3">3</label>
+              </div>
+              <div class="rating-option">
+                <input type="radio" id="lights_4" name="lights_condition" value="4">
+                <label for="lights_4">4</label>
+              </div>
+              <div class="rating-option">
+                <input type="radio" id="lights_5" name="lights_condition" value="5" checked>
+                <label for="lights_5">5 (Excellent)</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="rating-row">
+            <span class="rating-label">Body Condition:</span>
+            <div class="rating-options">
+              <div class="rating-option">
+                <input type="radio" id="body_1" name="body_condition" value="1">
+                <label for="body_1">1 (Poor)</label>
+              </div>
+              <div class="rating-option">
+                <input type="radio" id="body_2" name="body_condition" value="2">
+                <label for="body_2">2</label>
+              </div>
+              <div class="rating-option">
+                <input type="radio" id="body_3" name="body_condition" value="3">
+                <label for="body_3">3</label>
+              </div>
+              <div class="rating-option">
+                <input type="radio" id="body_4" name="body_condition" value="4">
+                <label for="body_4">4</label>
+              </div>
+              <div class="rating-option">
+                <input type="radio" id="body_5" name="body_condition" value="5" checked>
+                <label for="body_5">5 (Excellent)</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="section-title">Fluid Levels</h3>
+        
+        <div class="rating-group">
+          <div class="rating-row">
+            <span class="rating-label">Fuel Level:</span>
+            <div class="rating-options">
+              <div class="rating-option">
+                <input type="radio" id="fuel_1" name="fuel_level" value="1">
+                <label for="fuel_1">1 (Empty)</label>
+              </div>
+              <div class="rating-option">
+                <input type="radio" id="fuel_2" name="fuel_level" value="2">
+                <label for="fuel_2">2</label>
+              </div>
+              <div class="rating-option">
+                <input type="radio" id="fuel_3" name="fuel_level" value="3">
+                <label for="fuel_3">3</label>
+              </div>
+              <div class="rating-option">
+                <input type="radio" id="fuel_4" name="fuel_level" value="4" checked>
+                <label for="fuel_4">4</label>
+              </div>
+              <div class="rating-option">
+                <input type="radio" id="fuel_5" name="fuel_level" value="5">
+                <label for="fuel_5">5 (Full)</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="rating-row">
+            <span class="rating-label">Oil Level:</span>
+            <div class="rating-options">
+              <div class="rating-option">
+                <input type="radio" id="oil_1" name="oil_level" value="1">
+                <label for="oil_1">1 (Low)</label>
+              </div>
+              <div class="rating-option">
+                <input type="radio" id="oil_2" name="oil_level" value="2">
+                <label for="oil_2">2</label>
+              </div>
+              <div class="rating-option">
+                <input type="radio" id="oil_3" name="oil_level" value="3">
+                <label for="oil_3">3</label>
+              </div>
+              <div class="rating-option">
+                <input type="radio" id="oil_4" name="oil_level" value="4" checked>
+                <label for="oil_4">4</label>
+              </div>
+              <div class="rating-option">
+                <input type="radio" id="oil_5" name="oil_level" value="5">
+                <label for="oil_5">5 (Full)</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="rating-row">
+            <span class="rating-label">Coolant Level:</span>
+            <div class="rating-options">
+              <div class="rating-option">
+                <input type="radio" id="coolant_1" name="coolant_level" value="1">
+                <label for="coolant_1">1 (Low)</label>
+              </div>
+              <div class="rating-option">
+                <input type="radio" id="coolant_2" name="coolant_level" value="2">
+                <label for="coolant_2">2</label>
+              </div>
+              <div class="rating-option">
+                <input type="radio" id="coolant_3" name="coolant_level" value="3">
+                <label for="coolant_3">3</label>
+              </div>
+              <div class="rating-option">
+                <input type="radio" id="coolant_4" name="coolant_level" value="4" checked>
+                <label for="coolant_4">4</label>
+              </div>
+              <div class="rating-option">
+                <input type="radio" id="coolant_5" name="coolant_level" value="5">
+                <label for="coolant_5">5 (Full)</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="section-title">Additional Information</h3>
+        
+        <div class="form-group">
+          <label for="issues_noted">Issues Noted</label>
+          <textarea name="issues_noted" id="issues_noted" rows="3" placeholder="Describe any issues or concerns with the vehicle"></textarea>
+        </div>
+
+        <div class="checkbox-group">
+          <input type="checkbox" id="maintenance_needed" name="maintenance_needed">
+          <label for="maintenance_needed">Maintenance Needed</label>
+        </div>
+
+        <div class="btn-container">
+          <button type="reset" class="btn btn-secondary">Reset</button>
+          <button type="submit" class="btn btn-primary">Submit Check</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h2>Recent Health Checks</h2>
+      </div>
+
+      <table class="history-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Vehicle</th>
+            <th>Overall Condition</th>
+            <th>Maintenance</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for check in recent_checks %}
+          <tr>
+            <td>{{ check.check_date.strftime('%Y-%m-%d') }}</td>
+            <td>{{ check.vehicle.plate_number if check.vehicle else "—" }}</td>
+            <td>
+              {% set avg_condition = (check.engine_condition + check.brake_condition + check.tire_condition + check.lights_condition + check.body_condition) / 5 %}
+              {% if avg_condition >= 4 %}
+                <span class="status-badge status-good">Good</span>
+              {% elif avg_condition >= 3 %}
+                <span class="status-badge status-fair">Fair</span>
+              {% else %}
+                <span class="status-badge status-poor">Poor</span>
+              {% endif %}
+            </td>
+            <td>{{ "Yes" if check.maintenance_needed else "No" }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

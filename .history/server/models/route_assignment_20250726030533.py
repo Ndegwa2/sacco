@@ -7,7 +7,7 @@ class AssignedRoute(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     employee_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     route_id = db.Column(db.Integer, db.ForeignKey('route.id'), nullable=False)
-    vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicle.id'), nullable=True)
+    vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicle.id'), nullable=False)
     date_assigned = db.Column(db.DateTime, default=datetime.utcnow)
     start_date = db.Column(db.Date, nullable=False, default=datetime.utcnow().date)
     end_date = db.Column(db.Date, nullable=True)
