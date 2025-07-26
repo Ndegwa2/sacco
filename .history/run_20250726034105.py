@@ -1178,7 +1178,7 @@ def route_assignment():
     # Get drivers, routes, and vehicles for the form
     drivers = User.query.filter_by(role='employee').all()
     routes = Route.query.filter_by(status='active').all()
-    vehicles = Fleet.query.all()
+    vehicles = Vehicle.query.all()
     
     return render_template(
         'admin/route_assignment.html',
@@ -1264,7 +1264,7 @@ def edit_route_assignment(assignment_id):
     # Get data for form
     drivers = User.query.filter_by(role='employee').all()
     routes = Route.query.all()
-    vehicles = Fleet.query.all()
+    vehicles = Vehicle.query.all()
     
     return render_template(
         'admin/edit_route_assignment.html',
