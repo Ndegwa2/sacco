@@ -11,7 +11,7 @@
   <div class="dashboard-container">
     <div class="dashboard">
       <div class="welcome-section">
-        <h1 class="welcome-title">Welcome, {{ employee_name }}!</h1>
+        <h1 class="welcome-title">Welcome, Employee!</h1>
         <p class="welcome-subtitle">Manage your assigned tasks and track your performance</p>
       </div>
 
@@ -26,8 +26,7 @@
           </div>
           <div class="stat-content">
             <h3 class="stat-label">Assigned Routes</h3>
-            <p class="stat-value">{{ total_routes }}</p>
-            <p class="stat-description">Active route assignments</p>
+            <p class="stat-description">View and manage your route assignments</p>
           </div>
           <a href="{{ url_for('view_assigned_routes') }}" class="card-action">View Routes</a>
         </div>
@@ -42,26 +41,10 @@
             </svg>
           </div>
           <div class="stat-content">
-            <h3 class="stat-label">Total Trips</h3>
-            <p class="stat-value">{{ total_trips }}</p>
-            <p class="stat-description">Completed trips this period</p>
+            <h3 class="stat-label">Daily Driver Log</h3>
+            <p class="stat-description">Record your daily driving activities</p>
           </div>
           <a href="{{ url_for('driver_log') }}" class="card-action">Open Log</a>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="1" y="4" width="22" height="16" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
-              <line x1="1" y1="10" x2="23" y2="10" stroke="currentColor" stroke-width="2"/>
-            </svg>
-          </div>
-          <div class="stat-content">
-            <h3 class="stat-label">Total Earnings</h3>
-            <p class="stat-value">KSh {{ "{:,}".format(total_earnings|int) }}</p>
-            <p class="stat-description">Commission earned</p>
-          </div>
-          <a href="/employee/payment-summary" class="card-action">View Payments</a>
         </div>
 
         <div class="stat-card">
@@ -75,11 +58,24 @@
             </svg>
           </div>
           <div class="stat-content">
-            <h3 class="stat-label">Distance Covered</h3>
-            <p class="stat-value">{{ "{:,}".format(total_distance|int) }} km</p>
-            <p class="stat-description">Total distance driven</p>
+            <h3 class="stat-label">Vehicle Health</h3>
+            <p class="stat-description">Check and report vehicle condition</p>
           </div>
           <a href="{{ url_for('vehicle_health') }}" class="card-action">Health Check</a>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="1" y="4" width="22" height="16" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+              <line x1="1" y1="10" x2="23" y2="10" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="stat-content">
+            <h3 class="stat-label">Payment Summary</h3>
+            <p class="stat-description">View your payment details and history</p>
+          </div>
+          <a href="/employee/payment-summary" class="card-action">View Payments</a>
         </div>
 
         <div class="stat-card">
@@ -89,9 +85,8 @@
             </svg>
           </div>
           <div class="stat-content">
-            <h3 class="stat-label">Health Checks</h3>
-            <p class="stat-value">{{ health_checks_count }}</p>
-            <p class="stat-description">Vehicle inspections completed</p>
+            <h3 class="stat-label">Performance Tracker</h3>
+            <p class="stat-description">Monitor your performance metrics</p>
           </div>
           <a href="{{ url_for('performance_tracker') }}" class="card-action">View Performance</a>
         </div>
