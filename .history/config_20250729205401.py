@@ -1,3 +1,5 @@
+import pymysql
+pymysql.install_as_MySQLdb()
 import os
 # config.py
 from flask_sqlalchemy import SQLAlchemy
@@ -9,14 +11,11 @@ db = SQLAlchemy()
 def configure_app(app):
     app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'Ndegwa_Sacco')
     
-    # Use environment variable for database URL, fallback to local SQLite for development
-    database_url = os.environ.get('DATABASE_URL')
-    
-    # Handle Render's postgres:// URL format by converting to postgresql://
-    if database_url and database_url.startswith('postgres://'):
-        database_url = database_url.replace('postgres://', 'postgresql://', 1)
-    
-    app.config['SQLALCHEMY_DATABASE_URI'] = database_url or 'sqlite:///sacco_system.db'
+    # Use environment variable for database URL, fallback to local MySQL for development
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
+        'DATABASE_URL',
+        'mysql+pymysql://root:@localhost/sacco_system'
+    )
     
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     
