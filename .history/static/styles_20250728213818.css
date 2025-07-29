@@ -71,7 +71,7 @@ nav ul li a:hover {
 
 /* Hero section */
 .hero {
-  background: url('/static/background2.png') no-repeat center center/cover;
+  background: url('../Client/background2.png') no-repeat center center/cover;
   color: white;
   text-align: center;
   padding: 6rem 2rem;

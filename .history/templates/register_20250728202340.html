@@ -33,6 +33,7 @@
     
     <!-- Registration Form -->
     <form method="POST" action="{{ url_for('register') }}" class="auth-form">
+      {{ csrf_token() }}
       
       <div class="form-group">
         <label for="full_name">Full Name</label>

@@ -134,7 +134,7 @@ def booking():
 
 @app.route("/confirmation")
 def confirmation():
-    return render_template("confirmation.html")
+    return "<h1>Thank you for booking with NaiSmart!</h1><p>Your trip has been reserved.</p>"
 
 @app.route("/dashboard_employee.html")
 @login_required
@@ -898,10 +898,6 @@ def serve_static_client(filename):
 @app.route('/static/<path:filename>')
 def serve_static(filename):
     return send_from_directory('static', filename)
-
-@app.route('/favicon.ico')
-def favicon():
-    return send_from_directory('static', 'Naismart Logo.png', mimetype='image/vnd.microsoft.icon')
 
 
 @app.route('/employee/assigned-routes')

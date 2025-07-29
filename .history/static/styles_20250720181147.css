@@ -71,7 +71,7 @@ nav ul li a:hover {
 
 /* Hero section */
 .hero {
-  background: url('/static/background2.png') no-repeat center center/cover;
+  background: url('https://img.freepik.com/free-photo/male-bus-driver-portrait_23-2151582626.jpg?ga=GA1.1.1362746214.1749109585&semt=ais_items_boosted&w=740') no-repeat center center/cover;
   color: white;
   text-align: center;
   padding: 6rem 2rem;

@@ -21,14 +21,13 @@ from server.models.driver_log import DriverLog
 from server.models.vehicle_health import VehicleHealth
 
 # Flask app initialization
-app = Flask(__name__)
+app = Flask(__name__, static_folder="static", static_url_path="/static")
 app.secret_key = os.environ.get('SECRET_KEY', 'Ndegwa_Sacco')  # Fallback for local testing
 
 # Configure and initialize extensions
 configure_app(app)
 db.init_app(app)
 Migrate(app, db)
-
 
 # Initialize database
 with app.app_context():
@@ -134,7 +133,7 @@ def booking():
 
 @app.route("/confirmation")
 def confirmation():
-    return render_template("confirmation.html")
+    return "<h1>Thank you for booking with NaiSmart!</h1><p>Your trip has been reserved.</p>"
 
 @app.route("/dashboard_employee.html")
 @login_required
@@ -898,10 +897,6 @@ def serve_static_client(filename):
 @app.route('/static/<path:filename>')
 def serve_static(filename):
     return send_from_directory('static', filename)
-
-@app.route('/favicon.ico')
-def favicon():
-    return send_from_directory('static', 'Naismart Logo.png', mimetype='image/vnd.microsoft.icon')
 
 
 @app.route('/employee/assigned-routes')

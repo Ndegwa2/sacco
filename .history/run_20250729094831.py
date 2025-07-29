@@ -134,7 +134,7 @@ def booking():
 
 @app.route("/confirmation")
 def confirmation():
-    return render_template("confirmation.html")
+    return "<h1>Thank you for booking with NaiSmart!</h1><p>Your trip has been reserved.</p>"
 
 @app.route("/dashboard_employee.html")
 @login_required

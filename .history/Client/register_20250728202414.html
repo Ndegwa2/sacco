@@ -4,22 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Register - NaiSmart SACCO</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles/auth.css') }}">
+  <link rel="stylesheet" href="../static/styles/auth.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- Flash messages -->
-  {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-      <ul class="flashes">
-        {% for category, message in messages %}
-          <li class="flash {{ category }}">{{ message }}</li>
-        {% endfor %}
-      </ul>
-    {% endif %}
-  {% endwith %}
+  <!-- Flash messages placeholder -->
+  <ul class="flashes">
+    <!-- Flash messages would be populated by JavaScript or server-side -->
+  </ul>
 
   <div class="auth-card">
     <!-- Logo/Brand -->
@@ -32,21 +26,7 @@
     <p class="auth-subtitle">Join NaiSmart SACCO today</p>
     
     <!-- Registration Form -->
-    <form method="POST" action="{{ url_for('register') }}" class="auth-form">
-      
-      <div class="form-group">
-        <label for="full_name">Full Name</label>
-        <input 
-          type="text" 
-          id="full_name" 
-          name="full_name" 
-          class="form-input" 
-          placeholder="e.g. Mercy Mwendwa" 
-          required
-          autocomplete="name"
-        >
-      </div>
-      
+    <form method="POST" action="/register" class="auth-form">
       <div class="form-group">
         <label for="username">Username</label>
         <input 
@@ -104,7 +84,7 @@
     
     <!-- Login Link -->
     <div class="auth-link">
-      Already have an account? <a href="{{ url_for('login') }}">Sign in here</a>
+      Already have an account? <a href="login.html">Sign in here</a>
     </div>
   </div>
 
@@ -116,19 +96,6 @@
       button.textContent = 'Creating Account...';
     });
 
-    // Auto-hide flash messages after 5 seconds
-    document.addEventListener('DOMContentLoaded', function() {
-      const flashes = document.querySelectorAll('.flash');
-      flashes.forEach(function(flash) {
-        setTimeout(function() {
-          flash.style.animation = 'slideOut 0.3s ease forwards';
-          setTimeout(function() {
-            flash.remove();
-          }, 300);
-        }, 5000);
-      });
-    });
-
     // Password strength indicator
     const passwordInput = document.getElementById('password');
     const passwordGroup = passwordInput.parentElement;
@@ -136,7 +103,6 @@
     passwordInput.addEventListener('input', function() {
       const password = this.value;
       let strength = 0;
-      let feedback = '';
       
       if (password.length >= 6) strength++;
       if (password.match(/[a-z]/)) strength++;
@@ -178,22 +144,6 @@
         passwordGroup.appendChild(indicator);
       }
     });
-
-    // Add slideOut animation
-    const style = document.createElement('style');
-    style.textContent = `
-      @keyframes slideOut {
-        from {
-          transform: translateX(0);
-          opacity: 1;
-        }
-        to {
-          transform: translateX(100%);
-          opacity: 0;
-        }
-      }
-    `;
-    document.head.appendChild(style);
   </script>
 </body>
 </html>
