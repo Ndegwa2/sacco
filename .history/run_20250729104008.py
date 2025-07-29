@@ -65,8 +65,6 @@ def login():
                     return redirect(url_for('admin_dashboard'))
                 elif user.role == 'employee':
                     return redirect("/dashboard_employee.html")
-                elif user.role == 'passenger':
-                    return redirect("/dashboard_passenger.html")
                 else:
                     return redirect("/index.html")
 
