@@ -4,9 +4,21 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: url('/static/confirmation.png') center center/cover no-repeat;
   position: relative;
   overflow: hidden;
+}
+
+/* Add overlay for better text readability */
+.confirmation-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 1;
 }
 
 .confirmation-box {
@@ -14,7 +26,7 @@
   border-radius: 20px;
   padding: 3rem 2rem;
   text-align: center;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
   max-width: 500px;
   width: 90%;
   animation: fadeIn 0.8s ease-out;
