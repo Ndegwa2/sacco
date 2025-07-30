@@ -5,6 +5,9 @@ services:
     runtime: python
     pythonVersion: "3.11.9"
     buildCommand: |
+      echo "Installing system dependencies..."
+      apt-get update
+      apt-get install -y postgresql-client libpq-dev gcc python3-dev
       echo "Python version:"
       python --version
       echo "Upgrading pip..."
