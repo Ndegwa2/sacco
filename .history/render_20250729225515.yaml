@@ -3,7 +3,7 @@ services:
     name: sacco-management
     env: python
     runtime: python
-    pythonVersion: "3.11.9"
+    pythonVersion: "3.11"
     buildCommand: |
       python --version
       pip install --upgrade pip
@@ -11,6 +11,6 @@ services:
     startCommand: gunicorn run:app
     envVars:
       - key: PYTHON_VERSION
-        value: "3.11.9"
+        value: "3.11"
       - key: BUILD_DEPS
         value: "postgresql-dev gcc python3-dev musl-dev"
