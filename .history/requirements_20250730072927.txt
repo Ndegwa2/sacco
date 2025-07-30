@@ -9,10 +9,7 @@ Flask-WTF==1.2.1
 SQLAlchemy==2.0.36
 PyMySQL==1.1.1
 # PostgreSQL adapter - using binary for easier deployment
-# Primary option: psycopg2-binary (latest version)
 psycopg2-binary==2.9.10
-# Alternative option for Python 3.13 compatibility (uncomment if psycopg2 fails):
-# psycopg[binary]==3.1.18
 
 # Production server
 gunicorn==23.0.0
