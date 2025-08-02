@@ -10,6 +10,9 @@ body {
   background-size: cover;
   min-height: 100vh;
   color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 20px;
   position: relative;
 }
@@ -28,10 +31,12 @@ body::before {
 
 .dashboard-container {
   width: 100%;
-  max-width: 800px;
+  min-height: 100vh;
   position: relative;
   z-index: 10;
-  margin: 0 auto 3rem auto; /* Center horizontally and add bottom margin */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .dashboard {
@@ -42,6 +47,9 @@ body::before {
   border-radius: 24px;
   box-shadow: 0 25px 50px rgba(0, 77, 64, 0.3);
   text-align: center;
+  width: 100%;
+  max-width: 1000px;
+  margin: 20px;
 }
 
 .welcome-section {

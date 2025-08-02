@@ -10,6 +10,9 @@ body {
   background-size: cover;
   min-height: 100vh;
   color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 20px;
   position: relative;
 }
@@ -28,10 +31,9 @@ body::before {
 
 .dashboard-container {
   width: 100%;
-  max-width: 800px;
+  max-width: 1000px;
   position: relative;
   z-index: 10;
-  margin: 0 auto 3rem auto; /* Center horizontally and add bottom margin */
 }
 
 .dashboard {
