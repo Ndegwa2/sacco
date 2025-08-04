@@ -461,8 +461,8 @@ def admin_dashboard():
 @app.route('/admin/fleet')
 @login_required
 def fleet_management():
-    vehicles = Vehicle.query.all()
-    return render_template('admin/VehicleManagement.html', vehicles=vehicles)
+    fleet_vehicles = Vehicle.query.all()
+    return render_template('admin/VehicleManagement.html', fleet_vehicles=fleet_vehicles)
 
 @app.route('/admin/fleet/add', methods=['POST'])
 def add_fleet():
@@ -1357,143 +1357,6 @@ def delete_route_assignment(assignment_id):
     db.session.commit()
     
     flash("Assignment deleted successfully!", "success")
-# ------------------ VEHICLE-ROUTE ASSIGNMENT ROUTES ------------------
-
-@app.route('/admin/vehicle-route-assignment', methods=['GET'])
-@login_required
-def vehicle_route_assignment():
-    """Admin interface for direct vehicle-to-route assignments"""
-    if current_user.role != 'admin':
-        flash("Unauthorized access", "error")
-        return redirect(url_for('login'))
-    
-    # Get filter parameters
-    vehicle_id = request.args.get('vehicle', 'all')
-    route_id = request.args.get('route', 'all')
-    status = request.args.get('status', 'all')
-    
-    # Base query
-    query = VehicleRouteAssignment.query
-    
-    # Apply filters
-    if vehicle_id != 'all':
-        query = query.filter(VehicleRouteAssignment.vehicle_id == vehicle_id)
-    if route_id != 'all':
-        query = query.filter(VehicleRouteAssignment.route_id == route_id)
-    if status != 'all':
-        query = query.filter(VehicleRouteAssignment.status == status)
-    
-    # Get assignments with filters applied
-    assignments = query.order_by(VehicleRouteAssignment.assigned_date.desc()).all()
-    
-    # Get vehicles and routes for the form
-    vehicles = Vehicle.query.filter_by(status='active').all()
-    routes = Route.query.filter_by(status='active').all()
-    
-    return render_template(
-        'admin/vehicle_route_assignment.html',
-        assignments=assignments,
-        vehicles=vehicles,
-        routes=routes
-    )
-
-@app.route('/admin/vehicle-route-assignment/add', methods=['POST'])
-@login_required
-def add_vehicle_route_assignment():
-    """Add a new vehicle-route assignment"""
-    if current_user.role != 'admin':
-        flash("Unauthorized access", "error")
-        return redirect(url_for('login'))
-    
-    # Get form data
-    vehicle_id = request.form.get('vehicle_id')
-    route_id = request.form.get('route_id')
-    start_date_str = request.form.get('start_date')
-    end_date_str = request.form.get('end_date')
-    priority = request.form.get('priority', 'normal')
-    notes = request.form.get('notes')
-    
-    # Convert dates
-    from datetime import datetime
-    start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date() if start_date_str else None
-    end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date() if end_date_str else None
-    
-    # Create new assignment
-    new_assignment = VehicleRouteAssignment(
-        vehicle_id=vehicle_id,
-        route_id=route_id,
-        start_date=start_date,
-        end_date=end_date,
-        priority=priority,
-        notes=notes,
-        status='active',
-        assigned_by=current_user.id
-    )
-    
-    db.session.add(new_assignment)
-    db.session.commit()
-    
-    flash("Vehicle assigned to route successfully!", "success")
-    return redirect(url_for('vehicle_route_assignment'))
-
-@app.route('/admin/vehicle-route-assignment/edit/<int:assignment_id>', methods=['GET', 'POST'])
-@login_required
-def edit_vehicle_route_assignment(assignment_id):
-    """Edit a vehicle-route assignment"""
-    if current_user.role != 'admin':
-        flash("Unauthorized access", "error")
-        return redirect(url_for('login'))
-    
-    # Get the assignment
-    assignment = VehicleRouteAssignment.query.get_or_404(assignment_id)
-    
-    if request.method == 'POST':
-        # Update assignment with form data
-        assignment.vehicle_id = request.form.get('vehicle_id')
-        assignment.route_id = request.form.get('route_id')
-        
-        # Convert dates
-        from datetime import datetime
-        start_date_str = request.form.get('start_date')
-        end_date_str = request.form.get('end_date')
-        assignment.start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date() if start_date_str else None
-        assignment.end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date() if end_date_str else None
-        
-        assignment.priority = request.form.get('priority', 'normal')
-        assignment.notes = request.form.get('notes')
-        assignment.status = request.form.get('status')
-        assignment.updated_at = datetime.utcnow()
-        
-        db.session.commit()
-        
-        flash("Vehicle-route assignment updated successfully!", "success")
-        return redirect(url_for('vehicle_route_assignment'))
-    
-    # Get data for form
-    vehicles = Vehicle.query.all()
-    routes = Route.query.all()
-    
-    return render_template(
-        'admin/edit_vehicle_route_assignment.html',
-        assignment=assignment,
-        vehicles=vehicles,
-        routes=routes
-    )
-
-@app.route('/admin/vehicle-route-assignment/delete/<int:assignment_id>')
-@login_required
-def delete_vehicle_route_assignment(assignment_id):
-    """Delete a vehicle-route assignment"""
-    if current_user.role != 'admin':
-        flash("Unauthorized access", "error")
-        return redirect(url_for('login'))
-    
-    assignment = VehicleRouteAssignment.query.get_or_404(assignment_id)
-    db.session.delete(assignment)
-    db.session.commit()
-    
-    flash("Vehicle-route assignment deleted successfully!", "success")
-    return redirect(url_for('vehicle_route_assignment'))
     return redirect(url_for('route_assignment'))
 
 # ------------------ RUN THE APP ------------------
