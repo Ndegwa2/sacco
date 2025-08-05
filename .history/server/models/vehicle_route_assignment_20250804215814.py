@@ -30,8 +30,8 @@ class VehicleRouteAssignment(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     # Relationships
-    vehicle = db.relationship('Vehicle', backref='direct_route_assignments')
-    route = db.relationship('Route', backref='direct_vehicle_assignments')
+    vehicle = db.relationship('Vehicle', backref='vehicle_route_assignments')
+    route = db.relationship('Route', backref='vehicle_assignments')
     admin = db.relationship('User', foreign_keys=[assigned_by], backref='created_vehicle_route_assignments')
     
     def __repr__(self):

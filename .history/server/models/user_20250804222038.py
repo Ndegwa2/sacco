@@ -11,16 +11,12 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(150), unique=True)
     password_hash = db.Column(db.String(256), nullable=False)
     role = db.Column(db.String(50), default='passenger')  # admin, passenger
-    full_name = db.Column(db.String(150), nullable=True)  # Add full_name column
-    status = db.Column(db.String(50), default='active')   # Add status column
+    status = db.Column(db.String(50), default='active')
     
-    def get_full_name(self):
-        """Return full_name if available, otherwise username for backward compatibility"""
-        return self.full_name if self.full_name else self.username
-    
-    def get_status(self):
-        """Return status"""
-        return self.status if self.status else 'active'
+    @property
+    def full_name(self):
+        """Return username as full_name for backward compatibility"""
+        return self.username
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password, method='pbkdf2:sha256')

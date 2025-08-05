@@ -118,26 +118,16 @@ def booking():
         name = request.form.get('name')
         contact = request.form.get('contact')
 
-        # Convert string date and time to proper types
-        from datetime import datetime
-        try:
-            booking_date = datetime.strptime(travel_date, '%Y-%m-%d').date()
-            booking_time = datetime.strptime(travel_time, '%H:%M').time()
-        except ValueError as e:
-            flash(f"Invalid date or time format: {e}", "error")
-            return redirect(url_for('booking'))
-
-        # Create booking with user_id if user is authenticated
+        # Instead of print, insert into DB
         new_booking = Booking(
-            user_id=current_user.id if current_user.is_authenticated else None,
             route=route,
             pickup=pickup,
             dropoff=dropoff,
-            date=booking_date,
-            time=booking_time,
+            date=travel_date,
+            time=travel_time,
             name=name,
             contact=contact,
-            status="confirmed"
+            status="confirmed"  # NEW!
         )
         db.session.add(new_booking)
         db.session.commit()
@@ -163,12 +153,13 @@ def employee_dashboard():
     assigned_routes = AssignedRoute.query.filter_by(employee_id=current_user.id).all()
     total_routes = len(assigned_routes)
     
-    # Get employee's driver logs for consistent data source
-    driver_logs = DriverLog.query.filter_by(driver_id=current_user.id).all()
-    total_trips = sum(log.trips_completed for log in driver_logs) if driver_logs else 0
-    total_earnings = sum(log.total_earnings for log in driver_logs) if driver_logs else 0
+    # Get employee's performance data
+    performances = Performance.query.filter_by(employee_id=current_user.id).all()
+    total_trips = sum(p.trips for p in performances) if performances else 0
+    total_earnings = sum(p.commission for p in performances) if performances else 0
     
-    # Get total distance from the same driver logs
+    # Get employee's driver logs
+    driver_logs = DriverLog.query.filter_by(driver_id=current_user.id).all()
     total_distance = sum(log.total_distance for log in driver_logs) if driver_logs else 0
     
     # Get recent vehicle health checks
@@ -248,19 +239,8 @@ def passenger_dashboard():
         flash("Unauthorized access", "error")
         return redirect("/")
     
-    # Get passenger's bookings - prioritize user_id, fallback to name matching for legacy bookings
-    passenger_bookings = Booking.query.filter_by(user_id=current_user.id).all()
-    
-    # If no bookings found by user_id, try name matching for legacy bookings
-    if not passenger_bookings:
-        passenger_bookings = Booking.query.filter_by(name=current_user.get_full_name()).all()
-        
-        # Update legacy bookings to link with current user
-        if passenger_bookings:
-            for booking in passenger_bookings:
-                if booking.user_id is None:  # Only update if not already linked
-                    booking.user_id = current_user.id
-            db.session.commit()
+    # Get passenger's bookings
+    passenger_bookings = Booking.query.filter_by(name=current_user.get_full_name()).all()
     
     # Calculate statistics
     total_bookings = len(passenger_bookings)
@@ -280,12 +260,8 @@ def passenger_dashboard():
     # Calculate reward points (1 point per 100 KSh spent)
     reward_points = int(total_fare / 100)
     
-    # Get recent bookings (last 5) - use user_id for better performance
-    recent_bookings = Booking.query.filter_by(user_id=current_user.id).order_by(Booking.id.desc()).limit(5).all()
-    
-    # If no recent bookings by user_id, fallback to name matching
-    if not recent_bookings:
-        recent_bookings = Booking.query.filter_by(name=current_user.get_full_name()).order_by(Booking.id.desc()).limit(5).all()
+    # Get recent bookings (last 5)
+    recent_bookings = Booking.query.filter_by(name=current_user.get_full_name()).order_by(Booking.id.desc()).limit(5).all()
     
     return render_template("passenger_dashboard.html",
                          passenger_name=current_user.get_full_name(),
