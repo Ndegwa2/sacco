@@ -82,7 +82,7 @@
             <p class="stat-value">{{ "{:,}".format(total_distance|int) }} km</p>
             <p class="stat-description">Total distance driven</p>
           </div>
-          <a href="{{ url_for('vehicle_health') }}" class="card-action">Health Check</a>
+          <a href="{{ url_for('performance_tracker') }}" class="card-action">View Performance</a>
         </div>
 
         <div class="stat-card">
@@ -96,7 +96,7 @@
             <p class="stat-value">{{ health_checks_count }}</p>
             <p class="stat-description">Vehicle inspections completed</p>
           </div>
-          <a href="{{ url_for('performance_tracker') }}" class="card-action">View Performance</a>
+          <a href="{{ url_for('vehicle_health') }}" class="card-action">View Health Checks</a>
         </div>
       </div>
 
