@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Route Assignment - NaiSmart Admin</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles/dark-mode.css') }}">
+  <style>
+    /* Admin Header */
+    .admin-header {
+      background-color: #00695c;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+    }
+
+    /* Admin Profile */
+    .admin-profile span {
+      margin-right: 1rem;
+      font-weight: bold;
+    }
+
+    /* Sidebar Navigation */
+    .admin-sidebar {
+      background-color: #00695c;
+      padding-top: 60px;
+      height: 100vh;
+      width: 200px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      overflow-y: auto;
+    }
+
+    .admin-sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .admin-sidebar ul li a {
+      display: block;
+      padding: 1rem;
+      color: white;
+      text-decoration: none;
+      transition: background-color 0.3s;
+    }
+
+    .admin-sidebar ul li a:hover,
+    .admin-sidebar ul li a.active {
+      background-color: #004d40;
+      font-weight: bold;
+    }
+
+    /* Main Content */
+    .admin-main {
+      margin-left: 220px;
+      margin-top: 80px;
+      padding: 2rem;
+      background-color: #f9f9f9;
+      min-height: 100vh;
+    }
+
+    /* Section Styling */
+    .admin-section {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+      margin-bottom: 2rem;
+    }
+
+    /* Form Styling */
+    form#editAssignmentForm {
+      background: #f1f8f6;
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    form input,
+    form select,
+    form textarea {
+      padding: 0.7rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .form-group label {
+      font-weight: bold;
+      color: #00695c;
+    }
+
+    /* Buttons */
+    .btn {
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .btn-primary {
+      background-color: #00bfa5;
+      color: white;
+    }
+
+    .btn-secondary {
+      background-color: #757575;
+      color: white;
+    }
+
+    .btn-container {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="admin-header">
+    <h1>NaiSmart Admin</h1>
+    <div class="admin-profile">
+      <span>Admin</span>
+      <a href="/logout">Logout</a>
+    </div>
+  </header>
+
+  <!-- Sidebar -->
+  <aside class="admin-sidebar">
+    <ul>
+      <li><a href="{{ url_for('admin_dashboard') }}">Dashboard</a></li>
+      <li><a href="{{ url_for('manage_routes') }}">Manage Routes</a></li>
+      <li><a href="{{ url_for('fleet_management') }}">Fleet</a></li>
+      <li><a href="{{ url_for('route_assignment') }}" class="active">Route Assignment</a></li>
+      <li><a href="{{ url_for('fare_records') }}">Fare Records</a></li>
+      <li><a href="{{ url_for('sacco_members') }}">SACCO Members</a></li>
+      <li><a href="{{ url_for('staff_management') }}">Staff</a></li>
+      <li><a href="{{ url_for('reports') }}">Reports</a></li>
+    </ul>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="admin-main">
+    <h2>Edit Route Assignment</h2>
+
+    <section class="admin-section">
+      <form id="editAssignmentForm" method="POST" action="{{ url_for('edit_route_assignment', assignment_id=assignment.id) }}">
+        <div class="form-group">
+          <label for="employee_id">Driver</label>
+          <select name="employee_id" id="employee_id" required>
+            <option value="">Select Driver</option>
+            {% for driver in drivers %}
+            <option value="{{ driver.id }}" {% if driver.id == assignment.employee_id %}selected{% endif %}>{{ driver.full_name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="route_id">Route</label>
+          <select name="route_id" id="route_id" required>
+            <option value="">Select Route</option>
+            {% for route in routes %}
+            <option value="{{ route.id }}" {% if route.id == assignment.route_id %}selected{% endif %}>{{ route.route_name }} ({{ route.origin }} - {{ route.destination }})</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="vehicle_id">Vehicle</label>
+          <select name="vehicle_id" id="vehicle_id">
+            <option value="">Select Vehicle</option>
+            {% for vehicle in vehicles %}
+            <option value="{{ vehicle.id }}" {% if vehicle.id == assignment.vehicle_id %}selected{% endif %}>{{ vehicle.plate_number }} ({{ vehicle.vehicle_model }})</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="start_date">Start Date</label>
+          <input type="date" name="start_date" id="start_date" value="{{ assignment.start_date.strftime('%Y-%m-%d') if assignment.start_date else assignment.date_assigned.strftime('%Y-%m-%d') }}" required>
+        </div>
+
+        <div class="form-group">
+          <label for="end_date">End Date (Optional)</label>
+          <input type="date" name="end_date" id="end_date" value="{{ assignment.end_date.strftime('%Y-%m-%d') if assignment.end_date else '' }}">
+        </div>
+
+        <div class="form-group">
+          <label for="shift">Shift (Optional)</label>
+          <select name="shift" id="shift">
+            <option value="">Select Shift</option>
+            <option value="morning" {% if assignment.shift == 'morning' %}selected{% endif %}>Morning</option>
+            <option value="afternoon" {% if assignment.shift == 'afternoon' %}selected{% endif %}>Afternoon</option>
+            <option value="evening" {% if assignment.shift == 'evening' %}selected{% endif %}>Evening</option>
+            <option value="night" {% if assignment.shift == 'night' %}selected{% endif %}>Night</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="status">Status</label>
+          <select name="status" id="status" required>
+            <option value="active" {% if assignment.status == 'active' %}selected{% endif %}>Active</option>
+            <option value="completed" {% if assignment.status == 'completed' %}selected{% endif %}>Completed</option>
+            <option value="cancelled" {% if assignment.status == 'cancelled' %}selected{% endif %}>Cancelled</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="notes">Notes (Optional)</label>
+          <textarea name="notes" id="notes" rows="3">{{ assignment.notes }}</textarea>
+        </div>
+
+        <div class="btn-container">
+          <button type="submit" class="btn btn-primary">Update Assignment</button>
+          <a href="{{ url_for('route_assignment') }}" class="btn btn-secondary">Cancel</a>
+        </div>
+      </form>
+    </section>
+  </main>
+</body>
+</html>

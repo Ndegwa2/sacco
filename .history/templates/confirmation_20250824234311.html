@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmed - NaiSmart Sacco</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/confirmation.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/dark-mode.css') }}">
+</head>
+<body>
+    <div class="confirmation-container">
+        <div class="confirmation-box">
+            <div class="checkmark-wrapper">
+                <svg class="checkmark" viewBox="0 0 52 52">
+                    <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none" />
+                    <path class="checkmark-check" fill="none" d="M14 27l7 7 17-17" />
+                </svg>
+                <h1>Booking Confirmed!</h1>
+                <p class="confirmation-message">Your ride has been scheduled successfully.</p>
+                <div class="booking-details">
+                    <p class="detail-text">Thank you for choosing NaiSmart Sacco. We'll send you a confirmation message shortly.</p>
+                </div>
+            </div>
+            
+            <div class="action-buttons">
+                <a href="{{ url_for('index') }}" class="btn btn-primary">Back to Home</a>
+                <a href="/client/Booking.html" class="btn btn-secondary">Book Another Ride</a>
+            </div>
+        </div>
+        
+        <div class="success-animation">
+            <div class="confetti"></div>
+            <div class="confetti"></div>
+            <div class="confetti"></div>
+            <div class="confetti"></div>
+            <div class="confetti"></div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/dark-mode.js') }}"></script>
+</body>
+</html>

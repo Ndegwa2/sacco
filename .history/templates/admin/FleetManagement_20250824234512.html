@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fleet Management - NaiSmart Admin</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles/dark-mode.css') }}">
+</head>
+<body>
+  <!-- Header -->
+  <header class="admin-header">
+    <h1>NaiSmart Admin</h1>
+    <div class="admin-profile">
+      <span>Admin</span>
+      <a href="/logout">Logout</a>
+    </div>
+  </header>
+
+  <!-- Sidebar -->
+  <aside class="admin-sidebar">
+    <ul>
+      <li><a href="{{ url_for('admin_dashboard') }}">Dashboard</a></li>
+      <li><a href="{{ url_for('manage_routes') }}">Manage Routes</a></li>
+      <li><a href="{{ url_for('fleet_management') }}" class="active">Fleet</a></li>
+      <li><a href="{{ url_for('fare_records') }}">Fare Records</a></li>
+      <li><a href="{{ url_for('sacco_members') }}">SACCO Members</a></li>
+      <li><a href="{{ url_for('staff_management') }}">Staff</a></li>
+      <li><a href="{{ url_for('reports') }}">Reports</a></li>
+    </ul>
+  </aside>
+
+  <style>
+/* Admin Header */
+.admin-header {
+  background-color: #00695c;
+  color: white;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+/* Admin Profile */
+.admin-profile span {
+  margin-right: 1rem;
+  font-weight: bold;
+}
+
+/* Sidebar Navigation */
+.admin-sidebar {
+  background-color: #00695c;
+  padding-top: 60px;
+  height: 100vh;
+  width: 200px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow-y: auto;
+}
+
+.admin-sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.admin-sidebar ul li a {
+  display: block;
+  padding: 1rem;
+  color: white;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.admin-sidebar ul li a:hover,
+.admin-sidebar ul li a.active {
+  background-color: #004d40;
+  font-weight: bold;
+}
+
+/* Main Content */
+.admin-main {
+  margin-left: 220px;
+  margin-top: 80px;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+}
+
+/* Section Styling */
+.admin-section {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+}
+
+/* Add Button */
+.add-btn {
+  background-color: #00bfa5;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+/* Form Styling */
+form#addFleetForm {
+  background: #f1f8f6;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+form input,
+form select {
+  padding: 0.7rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+/* Table Styling */
+.route-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.route-table th,
+.route-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.route-table th {
+  background-color: #004d40;
+  color: white;
+}
+
+/* Status Badges */
+.badge.active {
+  background-color: #00bfa5;
+  color: white;
+  padding: 0.3rem 0.7rem;
+  border-radius: 20px;
+}
+
+.badge.inactive {
+  background-color: #ef5350;
+  color: white;
+  padding: 0.3rem 0.7rem;
+  border-radius: 20px;
+}
+
+/* Action Buttons */
+.edit-btn, .delete-btn {
+  padding: 0.4rem 0.8rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 0.5rem;
+}
+
+.edit-btn {
+  background-color: #42a5f5;
+  color: white;
+}
+
+.delete-btn {
+  background-color: #ef5350;
+  color: white;
+}
+  </style>
+
+  <!-- Main Content -->
+  <main class="admin-main">
+    <h2>Fleet Management</h2>
+
+    <section class="admin-section">
+      <!-- Add Button -->
+      <button class="add-btn" onclick="toggleForm()">+ Add New Vehicle</button>
+
+      <!-- Add Vehicle Form -->
+      <form id="addFleetForm" style="display:none;" method="POST" action="/admin/fleet/add">
+        <input type="text" name="plate_number" placeholder="Plate Number (e.g. KDA 123A)" required>
+        <input type="text" name="vehicle_model" placeholder="Vehicle Model (e.g. Nissan Caravan)" required>
+        <input type="text" name="assigned_route" placeholder="Assigned Route (e.g. CBD - Rongai)" required>
+        <select name="status">
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+        </select>
+        <button type="submit">Save Vehicle</button>
+      </form>
+
+      <!-- Fleet Table -->
+      <table class="route-table">
+        <thead>
+          <tr>
+            <th>Plate No.</th>
+            <th>Model</th>
+            <th>Route</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for vehicle in fleet_vehicles %}
+          <tr>
+            <td>{{ vehicle.plate_number }}</td>
+            <td>{{ vehicle.vehicle_model }}</td>
+            <td>{{ vehicle.assigned_route }}</td>
+            <td><span class="badge {{ 'active' if vehicle.status == 'active' else 'inactive' }}">{{ vehicle.status|title }}</span></td>
+            <td>
+              <button class="edit-btn">Edit</button>
+              <button class="delete-btn">Delete</button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <script>
+    function toggleForm() {
+      const form = document.getElementById('addFleetForm');
+      form.style.display = form.style.display === 'none' ? 'block' : 'none';
+    }
+  </script>
+  <script src="{{ url_for('static', filename='js/dark-mode.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NaiSmart SACCO System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('serve_static', filename='styles.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('serve_static', filename='styles/navigation.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles/dark-mode.css') }}">
+  
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header>
+    <nav>
+      <div class="logo">
+        <img src="{{ url_for('serve_static_client', filename='Naismart Logo.png') }}" alt="NaiSmart Logo" height="50">
+      </div>
+      <ul>
+        <li><a href="{{ url_for('index') }}">Home</a></li>
+        <li><a href="{{ url_for('serve_static_client', filename='routes.html') }}">Routes</a></li>
+        <li><a href="{{ url_for('booking') }}">Booking</a></li>
+        {% if current_user.is_authenticated %}
+          {% if current_user.role == 'admin' %}
+            <li><a href="{{ url_for('admin_dashboard') }}">Dashboard</a></li>
+          {% elif current_user.role == 'employee' %}
+            <li><a href="{{ url_for('employee_dashboard') }}">Dashboard</a></li>
+          {% elif current_user.role == 'passenger' %}
+            <li><a href="{{ url_for('passenger_dashboard') }}">Dashboard</a></li>
+          {% endif %}
+          <li><a href="{{ url_for('logout') }}">Logout</a></li>
+        {% else %}
+          <li><a href="{{ url_for('login') }}">Login</a></li>
+          <li><a href="{{ url_for('register') }}">Register</a></li>
+        {% endif %}
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h2>Smart Transport for Smarter Cities</h2>
+    <p>Digitizing Nairobi's matatu SACCO operations for efficient, transparent, and reliable public transport.</p>
+    <a href="{{ url_for('booking') }}" class="btn">Book a Trip</a>
+  </section>
+
+  <section class="about-us">
+    <div class="about-container">
+      <h3>Who We Are</h3>
+      <p>
+        NaiSmart is a digital-first platform designed to empower matatu SACCOs in Nairobi through smart technology. 
+        We are a team of developers, transport specialists, and urban planners working together to bring transparency, efficiency, and growth to the heart of Kenya's public transport system.
+      </p>
+      <p>
+        Our mission is to revolutionize SACCO operations by offering digital tools that simplify fleet management, fare tracking, route planning, and investor reporting — while giving commuters real-time access and reliable service.
+      </p>
+      <p><strong>Built for Nairobi. Powered by trust.</strong></p>
+    </div>
+  </section>
+  
+  <section class="slogan-bar">
+    <p>Empowering Mobility. Enabling Trust. Driving Growth. </p>
+  </section>
+  
+
+  <!-- Services Overview -->
+  <section class="services">
+    <h3>What We Offer</h3>
+    <div class="service-grid">
+      <div>
+        <h4>Fleet & Route Management</h4>
+        <p>Efficient scheduling and fleet tracking to minimize delays and boost productivity.</p>
+      </div>
+      <div>
+        <h4>Fare Tracking</h4>
+        <p>Digitized payments and real-time fare reports to reduce leakage and increase trust.</p>
+      </div>
+      <div>
+        <h4>Investor Dashboard</h4>
+        <p>Transparent SACCO member dashboards with dividend tracking and financial reports.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Contact Us</a>
+      <a href="#">Help</a>
+    </div>
+    <p>&copy; 2025 NaiSmart SACCO System | Powered by Trust, Tech, and Transparency</p>
+  </footer>
+
+  
+</body>
+</html>

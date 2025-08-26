@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assigned Routes - NaiSmart</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <link rel="stylesheet" href="{{ url_for('serve_static', filename='styles/navigation.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f3fdf5;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      background-color: #2e7d32;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+      margin: 0;
+      font-size: 2rem;
+      letter-spacing: 1px;
+    }
+
+    .filter-bar {
+      width: 80%;
+      margin: 1rem auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .filter-bar input,
+    .filter-bar select {
+      padding: 0.5rem;
+      margin: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
+    table {
+      width: 80%;
+      margin: 1rem auto 2rem auto;
+      border-collapse: collapse;
+      background-color: #ffffff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 1rem;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #a5d6a7;
+      color: #2e7d32;
+      font-weight: 600;
+    }
+
+    tr:hover {
+      background-color: #e8f5e9;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .export-btn {
+      margin-left: auto;
+      margin-right: 1rem;
+      padding: 0.5rem 1rem;
+      background-color: #388e3c;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      table, .filter-bar {
+        width: 95%;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      th, td {
+        padding: 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="logo">
+        <img src="{{ url_for('static', filename='Naismart Logo.png') }}" alt="NaiSmart Logo" height="50">
+      </div>
+      <ul>
+        <li><a href="{{ url_for('employee_dashboard') }}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+        <li><a href="{{ url_for('view_assigned_routes') }}" class="active"><i class="fas fa-route"></i> Assigned Routes</a></li>
+        <li><a href="{{ url_for('view_payment_summary') }}"><i class="fas fa-money-bill"></i> Payment Summary</a></li>
+        <li><a href="{{ url_for('performance_tracker') }}"><i class="fas fa-chart-line"></i> Performance</a></li>
+        <li><a href="{{ url_for('vehicle_health') }}"><i class="fas fa-wrench"></i> Vehicle Health</a></li>
+        <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+      </ul>
+    </nav>
+  </header>
+  <h1>Assigned Routes</h1>
+  <div class="filter-bar">
+    <input type="text" placeholder="Search by Route Name">
+    <select aria-label="Filter by status">
+      <option>Status: All</option>
+      <option>Pending</option>
+      <option>Completed</option>
+    </select>
+    <a href="{{ url_for('export_assigned_routes') }}" class="export-btn">Export CSV</a>
+  </div>
+
+  <table>
+    <tr>
+      <th>Route ID</th>
+      <th>Route Name</th>
+      <th>Driver</th>
+      <th>Shift</th>
+      <th>Status</th>
+      <th>Date Assigned</th>
+    </tr>
+    {% for route in assigned_routes %}
+    <tr>
+      <td>{{ route.route.id }}</td>
+      <td>{{ route.route.route_name }}</td>
+      <td>{{ route.employee.full_name if route.employee else "—" }}</td>
+      <td>—</td>
+      <td>{{ route.route.status if route.route else "—" }}</td>
+      <td>{{ route.date_assigned.strftime('%Y-%m-%d') }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Contact Us</a>
+      <a href="#">Help</a>
+    </div>
+    <p>&copy; 2025 NaiSmart SACCO System | Powered by Trust, Tech, and Transparency</p>
+  </footer>
+</body>
+</html>

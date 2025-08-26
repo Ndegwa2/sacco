@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book a Trip - NaiSmart SACCO</title>
+  <link rel="stylesheet" href="/static/styles/auth.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="auth-card">
+    <!-- Logo/Brand -->
+    <div class="auth-logo">
+      NS
+    </div>
+    
+    <!-- Header -->
+    <h2>Book Your Trip</h2>
+    <p class="auth-subtitle">Reserve your seat with NaiSmart SACCO</p>
+    
+    <!-- Booking Form -->
+    <form action="/booking" method="POST" class="auth-form">
+      
+      <div class="form-group">
+        <label for="route">Select Route</label>
+        <select id="route" name="route" class="form-select" required>
+          <option value="">-- Choose a Route --</option>
+          <option value="CBD-Rongai">CBD – Rongai</option>
+          <option value="CBD-Githurai">CBD – Githurai</option>
+          <option value="CBD-Umoja">CBD – Umoja</option>
+          <option value="CBD-Thika">CBD – Thika</option>
+          <option value="CBD-Eastleigh">CBD – Eastleigh</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="pickup">Pickup Point</label>
+        <input 
+          type="text" 
+          id="pickup" 
+          name="pickup" 
+          class="form-input" 
+          placeholder="Enter your pickup location" 
+          required
+        >
+      </div>
+      
+      <div class="form-group">
+        <label for="dropoff">Drop-off Point</label>
+        <input 
+          type="text" 
+          id="dropoff" 
+          name="dropoff" 
+          class="form-input" 
+          placeholder="Enter your destination" 
+          required
+        >
+      </div>
+      
+      <div class="form-group">
+        <label for="date">Travel Date</label>
+        <input 
+          type="date" 
+          id="date" 
+          name="date" 
+          class="form-input" 
+          required
+        >
+      </div>
+      
+      <div class="form-group">
+        <label for="time">Preferred Time</label>
+        <input 
+          type="time" 
+          id="time" 
+          name="time" 
+          class="form-input" 
+          required
+        >
+      </div>
+      
+      <div class="form-group">
+        <label for="name">Your Name</label>
+        <input 
+          type="text" 
+          id="name" 
+          name="name" 
+          class="form-input" 
+          placeholder="Enter your full name" 
+          required
+        >
+      </div>
+      
+      <div class="form-group">
+        <label for="contact">Phone or Email</label>
+        <input 
+          type="text" 
+          id="contact" 
+          name="contact" 
+          class="form-input" 
+          placeholder="Enter your phone number or email" 
+          required
+        >
+      </div>
+      
+      <button type="submit" class="auth-btn">
+        Confirm Booking
+      </button>
+    </form>
+    
+    <!-- Navigation Link -->
+    <div class="auth-link">
+      <a href="/">← Back to Home</a> |
+      <a href="/login">Login</a> |
+      <a href="/register">Register</a>
+    </div>
+  </div>
+
+  <script>
+    // Add loading state to button on form submit
+    document.querySelector('.auth-form').addEventListener('submit', function() {
+      const button = document.querySelector('.auth-btn');
+      button.classList.add('loading');
+      button.textContent = 'Processing Booking...';
+    });
+
+    // Set minimum date to today
+    document.addEventListener('DOMContentLoaded', function() {
+      const dateInput = document.getElementById('date');
+      const today = new Date().toISOString().split('T')[0];
+      dateInput.setAttribute('min', today);
+    });
+  </script>
+</body>
+</html>
