@@ -644,30 +644,6 @@ def sacco_members():
     members = SaccoMember.query.all()
     return render_template('admin/sacco_members.html', members=members)
 
-@app.route('/admin/sacco-members/edit/<int:member_id>', methods=['GET', 'POST'])
-@login_required
-def edit_sacco_member(member_id):
-    if current_user.role != 'admin':
-        flash("Unauthorized access", "error")
-        return redirect(url_for('login'))
-    
-    member = SaccoMember.query.get_or_404(member_id)
-    
-    if request.method == 'POST':
-        # Update member with form data
-        member.full_name = request.form.get('full_name')
-        member.id_number = request.form.get('id_number')
-        member.email = request.form.get('email')
-        member.phone = request.form.get('phone')
-        member.shareholding = request.form.get('shareholding').replace(',', '')
-        
-        db.session.commit()
-        
-        flash("SACCO member updated successfully!", "success")
-        return redirect(url_for('sacco_members'))
-    
-    return render_template('admin/edit_sacco_member.html', member=member)
-
 @app.route('/admin/staff', methods=['GET', 'POST'])
 @login_required
 def staff_management():

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Staff - NaiSmart Admin</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles/dark-mode.css') }}">
+  <style>
+    /* Admin Header */
+    .admin-header {
+      background-color: #00695c;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+    }
+
+    /* Admin Profile */
+    .admin-profile span {
+      margin-right: 1rem;
+      font-weight: bold;
+    }
+
+    /* Sidebar Navigation */
+    .admin-sidebar {
+      background-color: #00695c;
+      padding-top: 60px;
+      height: 100vh;
+      width: 200px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      overflow-y: auto;
+    }
+
+    .admin-sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .admin-sidebar ul li a {
+      display: block;
+      padding: 1rem;
+      color: white;
+      text-decoration: none;
+      transition: background-color 0.3s;
+    }
+
+    .admin-sidebar ul li a:hover,
+    .admin-sidebar ul li a.active {
+      background-color: #004d40;
+      font-weight: bold;
+    }
+
+    /* Main Content */
+    .admin-main {
+      margin-left: 220px;
+      margin-top: 80px;
+      padding: 2rem;
+      background-color: #f9f9f9;
+      min-height: 100vh;
+    }
+
+    /* Section Styling */
+    .admin-section {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+      margin-bottom: 2rem;
+    }
+
+    /* Form Styling */
+    .edit-form {
+      background: #f1f8f6;
+      padding: 2rem;
+      border-radius: 8px;
+      max-width: 600px;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: bold;
+      color: #00695c;
+      margin-bottom: 0.5rem;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.7rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    /* Button Styling */
+    .btn {
+      padding: 0.7rem 1.5rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+      text-decoration: none;
+      display: inline-block;
+      margin-right: 1rem;
+    }
+
+    .btn-primary {
+      background-color: #00bfa5;
+      color: white;
+    }
+
+    .btn-secondary {
+      background-color: #6c757d;
+      color: white;
+    }
+
+    .btn-danger {
+      background-color: #ef5350;
+      color: white;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+    }
+
+    /* Staff Info */
+    .staff-info {
+      background: #e8f5e8;
+      padding: 1rem;
+      border-radius: 4px;
+      margin-bottom: 2rem;
+      border-left: 4px solid #00695c;
+    }
+
+    .staff-info h4 {
+      margin: 0 0 0.5rem 0;
+      color: #00695c;
+    }
+
+    .staff-info p {
+      margin: 0.25rem 0;
+      color: #555;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .admin-main {
+        margin-left: 0;
+        padding: 1rem;
+      }
+
+      .admin-sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        padding-top: 0;
+      }
+
+      .admin-header {
+        position: relative;
+      }
+
+      .edit-form {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="admin-header">
+    <h1>NaiSmart Admin</h1>
+    <div class="admin-profile">
+      <span>Admin</span>
+      <a href="/logout">Logout</a>
+    </div>
+  </header>
+
+  <!-- Sidebar -->
+  <aside class="admin-sidebar">
+    <ul>
+      <li><a href="{{ url_for('admin_dashboard') }}">Dashboard</a></li>
+      <li><a href="{{ url_for('manage_routes') }}">Manage Routes</a></li>
+      <li><a href="{{ url_for('fleet_management') }}">Vehicle Management</a></li>
+      <li><a href="{{ url_for('route_assignment') }}">Driver-Route Assignment</a></li>
+      <li><a href="{{ url_for('vehicle_route_assignment') }}">Vehicle-Route Assignment</a></li>
+      <li><a href="{{ url_for('fare_records') }}">Fare Records</a></li>
+      <li><a href="{{ url_for('sacco_members') }}">SACCO Members</a></li>
+      <li><a href="{{ url_for('staff_management') }}" class="active">Staff</a></li>
+      <li><a href="{{ url_for('reports') }}">Reports</a></li>
+    </ul>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="admin-main">
+    <h2>Edit Staff Member</h2>
+    
+    <section class="admin-section">
+      <!-- Staff Info -->
+      <div class="staff-info">
+        <h4>Current Staff Details</h4>
+        <p><strong>Name:</strong> {{ staff.full_name or "—" }}</p>
+        <p><strong>Staff ID:</strong> {{ staff.username }}</p>
+        <p><strong>Role:</strong> {{ staff.role }}</p>
+        <p><strong>Contact:</strong> {{ staff.email }}</p>
+        <p><strong>Status:</strong> {{ staff.status }}</p>
+        <p><strong>Created:</strong> {{ staff.created_at.strftime('%Y-%m-%d %H:%M') if staff.created_at else "N/A" }}</p>
+        <p><strong>Last Updated:</strong> {{ staff.updated_at.strftime('%Y-%m-%d %H:%M') if staff.updated_at else "N/A" }}</p>
+      </div>
+
+      <!-- Edit Form -->
+      <form class="edit-form" method="POST">
+        <div class="form-group">
+          <label for="full_name">Full Name</label>
+          <input type="text" name="full_name" id="full_name" value="{{ staff.full_name or '' }}" required>
+        </div>
+
+        <div class="form-group">
+          <label for="staff_id">Staff ID</label>
+          <input type="text" name="staff_id" id="staff_id" value="{{ staff.username }}" required>
+        </div>
+
+        <div class="form-group">
+          <label for="role">Role</label>
+          <input type="text" name="role" id="role" value="{{ staff.role }}" required>
+        </div>
+
+        <div class="form-group">
+          <label for="contact">Contact</label>
+          <input type="text" name="contact" id="contact" value="{{ staff.email }}" required>
+        </div>
+
+        <div class="form-group">
+          <label for="status">Status</label>
+          <select name="status" id="status" required>
+            <option value="active" {% if staff.status == 'active' %}selected{% endif %}>Active</option>
+            <option value="inactive" {% if staff.status == 'inactive' %}selected{% endif %}>Inactive</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary">Update Staff</button>
+          <a href="{{ url_for('staff_management') }}" class="btn btn-secondary">Cancel</a>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <script src="{{ url_for('static', filename='js/dark-mode.js') }}"></script>
+</body>
+</html>
