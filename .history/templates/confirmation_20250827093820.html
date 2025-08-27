@@ -29,35 +29,12 @@
                         <p><strong>Time:</strong> {{ booking.time.strftime('%I:%M %p') }}</p>
                         <p><strong>Pickup Point:</strong> {{ booking.pickup }}</p>
                         <p><strong>Drop-off Point:</strong> {{ booking.dropoff }}</p>
-                        <p><strong>Booking Time:</strong> {{ booking.created_at.strftime('%B %d, %Y at %I:%M %p') }}</p>
                         {% if booking.vehicle %}
                         <p><strong>Vehicle:</strong> {{ booking.vehicle.vehicle_model }} ({{ booking.vehicle.plate_number }})</p>
-                        <p><strong>Vehicle Capacity:</strong> {{ booking.vehicle.capacity }} passengers</p>
                         {% endif %}
                     </div>
-                    
-                    <div class="next-steps">
-                        <h3>Next Steps</h3>
-                        <ul>
-                            <li>Arrive at your pickup point at least 10 minutes before your scheduled time</li>
-                            <li>Have your booking reference (#{{ booking.id }}) ready</li>
-                            {% if booking.vehicle %}
-                            <li>Look for the vehicle with plate number {{ booking.vehicle.plate_number }}</li>
-                            <li>Vehicle capacity: {{ booking.vehicle.capacity }} passengers</li>
-                            {% endif %}
-                        </ul>
-                    </div>
-                    {% else %}
-                    <div class="booking-info">
-                        <p>We couldn't retrieve your booking details. Please check your email for confirmation.</p>
-                    </div>
                     {% endif %}
-                    {% if vehicle_full %}
-                    <div class="vehicle-full-warning">
-                        <p><strong>Important Notice:</strong> The vehicle for your route is now fully booked. No more passengers can be accommodated for this trip.</p>
-                    </div>
-                    {% endif %}
-                    <p class="detail-text">Thank you for choosing NaiSmart Sacco. A confirmation message with your booking details has been sent to {{ booking.contact if booking else "your registered email" }}.</p>
+                    <p class="detail-text">Thank you for choosing NaiSmart Sacco. A confirmation message with your booking details has been sent to {{ booking.contact }}.</p>
                 </div>
             </div>
             

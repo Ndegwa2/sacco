@@ -242,18 +242,6 @@ form select {
       const form = document.getElementById('addFleetForm');
       form.style.display = form.style.display === 'none' ? 'block' : 'none';
     }
-
-    function editVehicle(vehicleId) {
-      // Redirect to edit page (to be implemented)
-      window.location.href = `/admin/fleet/edit/${vehicleId}`;
-    }
-
-    function deleteVehicle(vehicleId) {
-      if (confirm('Are you sure you want to delete this vehicle? This action cannot be undone.')) {
-        // Send delete request (to be implemented)
-        window.location.href = `/admin/fleet/delete/${vehicleId}`;
-      }
-    }
   </script>
   <script src="{{ url_for('static', filename='js/dark-mode.js') }}"></script>
 </body>

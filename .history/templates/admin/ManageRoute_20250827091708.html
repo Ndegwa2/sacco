@@ -260,18 +260,6 @@ form input, form select {
       const form = document.getElementById('addRouteForm');
       form.style.display = form.style.display === 'none' ? 'block' : 'none';
     }
-
-    function editRoute(routeId) {
-      // Redirect to edit page (to be implemented)
-      window.location.href = `/admin/routes/edit/${routeId}`;
-    }
-
-    function deleteRoute(routeId) {
-      if (confirm('Are you sure you want to delete this route? This action cannot be undone.')) {
-        // Send delete request (to be implemented)
-        window.location.href = `/admin/routes/delete/${routeId}`;
-      }
-    }
   </script>
   <script src="{{ url_for('static', filename='js/dark-mode.js') }}"></script>
   

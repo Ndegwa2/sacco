@@ -168,15 +168,7 @@ def booking():
 
 @app.route("/confirmation")
 def confirmation():
-    booking_id = request.args.get('booking_id')
-    booking = Booking.query.get(booking_id) if booking_id else None
-    
-    # Check if the vehicle is full (no more bookings can be made for this route/time)
-    vehicle_full = False
-    if booking and booking.vehicle_id and booking.route and booking.date and booking.time:
-        vehicle_full = Booking.is_vehicle_fully_booked(booking.route, booking.date, booking.time, booking.vehicle_id)
-    
-    return render_template("confirmation.html", booking=booking, vehicle_full=vehicle_full)
+    return render_template("confirmation.html")
 
 @app.route("/dashboard_employee.html")
 @login_required
@@ -537,49 +529,6 @@ def add_fleet():
     db.session.commit()
 
     flash("Vehicle added successfully!")
-    return redirect(url_for('fleet_management'))
-
-@app.route('/admin/vehicle/edit/<int:vehicle_id>', methods=['GET', 'POST'])
-@login_required
-def edit_vehicle(vehicle_id):
-    if current_user.role != 'admin':
-        flash("Unauthorized access", "error")
-        return redirect(url_for('login'))
-    
-    vehicle = Vehicle.query.get_or_404(vehicle_id)
-    
-    if request.method == 'POST':
-        # Update vehicle with form data
-        vehicle.plate_number = request.form.get('plate_number')
-        vehicle.vehicle_model = request.form.get('vehicle_model')
-        vehicle.assigned_route = request.form.get('assigned_route') or None
-        vehicle.status = request.form.get('status')
-        
-        # Update capacity based on vehicle model
-        if 'caravan' in vehicle.vehicle_model.lower():
-            vehicle.capacity = 12
-        else:
-            vehicle.capacity = 33
-        
-        db.session.commit()
-        
-        flash("Vehicle updated successfully!", "success")
-        return redirect(url_for('fleet_management'))
-    
-    return render_template('admin/edit_vehicle.html', vehicle=vehicle)
-
-@app.route('/admin/vehicle/delete/<int:vehicle_id>')
-@login_required
-def delete_vehicle(vehicle_id):
-    if current_user.role != 'admin':
-        flash("Unauthorized access", "error")
-        return redirect(url_for('login'))
-    
-    vehicle = Vehicle.query.get_or_404(vehicle_id)
-    db.session.delete(vehicle)
-    db.session.commit()
-    
-    flash("Vehicle deleted successfully!", "success")
     return redirect(url_for('fleet_management'))
 
 @app.route('/admin/routes')

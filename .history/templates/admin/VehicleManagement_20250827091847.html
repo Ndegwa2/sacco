@@ -340,7 +340,7 @@ form select {
             <td>{{ vehicle.created_at.strftime('%Y-%m-%d') if vehicle.created_at else "—" }}</td>
             <td>
               <button class="edit-btn" onclick="editVehicle({{ vehicle.id }})">Edit</button>
-              <button class="delete-btn" onclick="deleteVehicle({{ vehicle.id }}, '{{ vehicle.plate_number }}')">Delete</button>
+              <button class="delete-btn" onclick="deleteVehicle({{ vehicle.id }})">Delete</button>
             </td>
           </tr>
           {% else %}

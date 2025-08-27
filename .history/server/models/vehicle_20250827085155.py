@@ -10,30 +10,12 @@ class Vehicle(db.Model):
     assigned_route = db.Column(db.String(100), nullable=True)  # Made nullable for flexibility
     status = db.Column(db.String(50), nullable=False, default='active')
     
-    # Vehicle capacity - 12 for caravans, 33 for others
-    capacity = db.Column(db.Integer, nullable=False)
+    # Vehicle capacity - assuming a default capacity of 14 seats (common for matatus in Kenya)
+    capacity = db.Column(db.Integer, nullable=False, default=14)
     
     # Additional fields for better vehicle management
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-    
-    def __init__(self, *args, **kwargs):
-        # Set capacity based on vehicle model before initializing
-        if 'vehicle_model' in kwargs:
-            if 'caravan' in kwargs['vehicle_model'].lower():
-                kwargs['capacity'] = 12
-            else:
-                kwargs['capacity'] = 33
-        elif 'vehicle_model' in args and len(args) >= 3:  # Assuming vehicle_model is the 3rd argument
-            if 'caravan' in args[2].lower():  # 3rd argument is vehicle_model
-                kwargs['capacity'] = 12
-            else:
-                kwargs['capacity'] = 33
-        else:
-            # Default capacity if no model specified
-            kwargs['capacity'] = 33
-            
-        super(Vehicle, self).__init__(*args, **kwargs)
     
     def __repr__(self):
         return f"Vehicle(id={self.id}, plate_number='{self.plate_number}', model='{self.vehicle_model}', status='{self.status}', capacity={self.capacity})"
@@ -56,8 +38,7 @@ class Vehicle(db.Model):
         booking_count = Booking.query.filter_by(
             route=route,
             date=date,
-            time=time,
-            vehicle_id=self.id
+            time=time
         ).count()
         
         # Check if we've reached capacity

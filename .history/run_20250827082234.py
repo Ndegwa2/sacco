@@ -4,8 +4,9 @@ import sys
 from flask import Flask, request, redirect, render_template, flash, url_for, send_from_directory, Response
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 import csv
+from server.models.employee_payment import EmployeePayment
+from flask_login import current_user
 from flask_migrate import Migrate
-from io import StringIO
 
 # Load environment variables from .env file
 from dotenv import load_dotenv
@@ -16,13 +17,12 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'serv
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
 from config import db, configure_app
-from server.models import User, Vehicle, Route, Booking, Performance
+from server.models import User, Vehicle, Route, Booking, EmployeePayment, Performance
 from server.models.user import SaccoMember
 from server.models.route_assignment import AssignedRoute
 from server.models.driver_log import DriverLog
 from server.models.vehicle_health import VehicleHealth
 from server.models.vehicle_route_assignment import VehicleRouteAssignment
-from server.models.employee_payment import EmployeePayment
 
 # Flask app initialization
 app = Flask(__name__)
@@ -34,6 +34,9 @@ db.init_app(app)
 Migrate(app, db)
 
 
+# Initialize database
+with app.app_context():
+    db.create_all()
 
 # Login manager setup
 login_manager = LoginManager()
@@ -76,7 +79,7 @@ def login():
 
         return render_template("login.html")
     except Exception as e:
-        print(" Login error:", e)
+        print("❌ Login error:", e)
         traceback.print_exc()
         return "Login failed", 500
 
@@ -124,24 +127,7 @@ def booking():
             flash(f"Invalid date or time format: {e}", "error")
             return redirect(url_for('booking'))
 
-        # Check for double booking
-        user_id = current_user.id if current_user.is_authenticated else None
-        if Booking.is_double_booking(route, booking_date, booking_time, user_id, name, contact):
-            flash("You already have a booking for this route at the same date and time.", "error")
-            return redirect(url_for('booking'))
-
-        # Find an available vehicle for this route/date/time
-        vehicle = Booking.get_available_vehicle_for_route(route, booking_date, booking_time)
-        if not vehicle:
-            flash("No vehicles are currently available for this route at the selected date and time.", "error")
-            return redirect(url_for('booking'))
-
-        # Check if the vehicle is fully booked
-        if Booking.is_vehicle_fully_booked(route, booking_date, booking_time, vehicle.id):
-            flash("This vehicle is fully booked for the selected route at the selected date and time.", "error")
-            return redirect(url_for('booking'))
-
-        # Create booking with user_id if user is authenticated and associate with vehicle
+        # Create booking with user_id if user is authenticated
         new_booking = Booking(
             user_id=current_user.id if current_user.is_authenticated else None,
             route=route,
@@ -151,32 +137,20 @@ def booking():
             time=booking_time,
             name=name,
             contact=contact,
-            vehicle_id=vehicle.id,
             status="confirmed"
         )
         db.session.add(new_booking)
         db.session.commit()
         
-        # Get the booking ID to pass to confirmation page
-        booking_id = new_booking.id
-        
-        # Redirect to confirmation page after successful booking, passing booking ID
-        return redirect(url_for('confirmation', booking_id=booking_id))
+        # Redirect to confirmation page after successful booking
+        return redirect(url_for('confirmation'))
 
     # For GET requests, opted to serve the static Booking.html file from Client directory
     return send_from_directory("Client", "Booking.html")
 
 @app.route("/confirmation")
 def confirmation():
-    booking_id = request.args.get('booking_id')
-    booking = Booking.query.get(booking_id) if booking_id else None
-    
-    # Check if the vehicle is full (no more bookings can be made for this route/time)
-    vehicle_full = False
-    if booking and booking.vehicle_id and booking.route and booking.date and booking.time:
-        vehicle_full = Booking.is_vehicle_fully_booked(booking.route, booking.date, booking.time, booking.vehicle_id)
-    
-    return render_template("confirmation.html", booking=booking, vehicle_full=vehicle_full)
+    return render_template("confirmation.html")
 
 @app.route("/dashboard_employee.html")
 @login_required
@@ -388,13 +362,10 @@ def performance_tracker():
     # Calculate trips per week
     weekly_data = []
     for week_name, start_date, end_date in weeks:
-        # Use database-level date filtering to avoid type comparison issues
         week_trips = sum(
-            p.trips for p in Performance.query.filter(
-                Performance.employee_id == current_user.id,
-                Performance.date >= start_date,
-                Performance.date <= end_date
-            ).all()
+            p.trips for p in performances
+            if isinstance(p.date, str) and start_date <= datetime.strptime(p.date, '%Y-%m-%d').date() <= end_date
+            or not isinstance(p.date, str) and start_date <= p.date <= end_date
         )
         weekly_data.append({'week': week_name, 'trips': week_trips})
     
@@ -537,49 +508,6 @@ def add_fleet():
     db.session.commit()
 
     flash("Vehicle added successfully!")
-    return redirect(url_for('fleet_management'))
-
-@app.route('/admin/vehicle/edit/<int:vehicle_id>', methods=['GET', 'POST'])
-@login_required
-def edit_vehicle(vehicle_id):
-    if current_user.role != 'admin':
-        flash("Unauthorized access", "error")
-        return redirect(url_for('login'))
-    
-    vehicle = Vehicle.query.get_or_404(vehicle_id)
-    
-    if request.method == 'POST':
-        # Update vehicle with form data
-        vehicle.plate_number = request.form.get('plate_number')
-        vehicle.vehicle_model = request.form.get('vehicle_model')
-        vehicle.assigned_route = request.form.get('assigned_route') or None
-        vehicle.status = request.form.get('status')
-        
-        # Update capacity based on vehicle model
-        if 'caravan' in vehicle.vehicle_model.lower():
-            vehicle.capacity = 12
-        else:
-            vehicle.capacity = 33
-        
-        db.session.commit()
-        
-        flash("Vehicle updated successfully!", "success")
-        return redirect(url_for('fleet_management'))
-    
-    return render_template('admin/edit_vehicle.html', vehicle=vehicle)
-
-@app.route('/admin/vehicle/delete/<int:vehicle_id>')
-@login_required
-def delete_vehicle(vehicle_id):
-    if current_user.role != 'admin':
-        flash("Unauthorized access", "error")
-        return redirect(url_for('login'))
-    
-    vehicle = Vehicle.query.get_or_404(vehicle_id)
-    db.session.delete(vehicle)
-    db.session.commit()
-    
-    flash("Vehicle deleted successfully!", "success")
     return redirect(url_for('fleet_management'))
 
 @app.route('/admin/routes')
@@ -1068,7 +996,7 @@ def serve_static(filename):
 
 @app.route('/favicon.ico')
 def favicon():
-    return send_from_directory('static', 'Naismart Logo.png', mimetype='image/png')
+    return send_from_directory('static', 'Naismart Logo.png', mimetype='image/vnd.microsoft.icon')
 
 
 @app.route('/employee/assigned-routes')

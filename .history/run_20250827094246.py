@@ -539,49 +539,6 @@ def add_fleet():
     flash("Vehicle added successfully!")
     return redirect(url_for('fleet_management'))
 
-@app.route('/admin/vehicle/edit/<int:vehicle_id>', methods=['GET', 'POST'])
-@login_required
-def edit_vehicle(vehicle_id):
-    if current_user.role != 'admin':
-        flash("Unauthorized access", "error")
-        return redirect(url_for('login'))
-    
-    vehicle = Vehicle.query.get_or_404(vehicle_id)
-    
-    if request.method == 'POST':
-        # Update vehicle with form data
-        vehicle.plate_number = request.form.get('plate_number')
-        vehicle.vehicle_model = request.form.get('vehicle_model')
-        vehicle.assigned_route = request.form.get('assigned_route') or None
-        vehicle.status = request.form.get('status')
-        
-        # Update capacity based on vehicle model
-        if 'caravan' in vehicle.vehicle_model.lower():
-            vehicle.capacity = 12
-        else:
-            vehicle.capacity = 33
-        
-        db.session.commit()
-        
-        flash("Vehicle updated successfully!", "success")
-        return redirect(url_for('fleet_management'))
-    
-    return render_template('admin/edit_vehicle.html', vehicle=vehicle)
-
-@app.route('/admin/vehicle/delete/<int:vehicle_id>')
-@login_required
-def delete_vehicle(vehicle_id):
-    if current_user.role != 'admin':
-        flash("Unauthorized access", "error")
-        return redirect(url_for('login'))
-    
-    vehicle = Vehicle.query.get_or_404(vehicle_id)
-    db.session.delete(vehicle)
-    db.session.commit()
-    
-    flash("Vehicle deleted successfully!", "success")
-    return redirect(url_for('fleet_management'))
-
 @app.route('/admin/routes')
 @login_required
 def manage_routes():

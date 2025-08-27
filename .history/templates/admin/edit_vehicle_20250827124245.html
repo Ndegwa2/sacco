@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Vehicle - NaiSmart Admin</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles/dark-mode.css') }}">
+  <style>
+    /* Admin Header */
+    .admin-header {
+      background-color: #00695c;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+    }
+
+    /* Admin Profile */
+    .admin-profile span {
+      margin-right: 1rem;
+      font-weight: bold;
+    }
+
+    /* Sidebar Navigation */
+    .admin-sidebar {
+      background-color: #00695c;
+      padding-top: 60px;
+      height: 100vh;
+      width: 200px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      overflow-y: auto;
+    }
+
+    .admin-sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .admin-sidebar ul li a {
+      display: block;
+      padding: 1rem;
+      color: white;
+      text-decoration: none;
+      transition: background-color 0.3s;
+    }
+
+    .admin-sidebar ul li a:hover,
+    .admin-sidebar ul li a.active {
+      background-color: #004d40;
+      font-weight: bold;
+    }
+
+    /* Main Content */
+    .admin-main {
+      margin-left: 220px;
+      margin-top: 80px;
+      padding: 2rem;
+      background-color: #f9f9f9;
+      min-height: 100vh;
+    }
+
+    /* Section Styling */
+    .admin-section {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+      margin-bottom: 2rem;
+    }
+
+    /* Form Styling */
+    .edit-form {
+      background: #f1f8f6;
+      padding: 2rem;
+      border-radius: 8px;
+      max-width: 600px;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: bold;
+      color: #00695c;
+      margin-bottom: 0.5rem;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.7rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    /* Button Styling */
+    .btn {
+      padding: 0.7rem 1.5rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+      text-decoration: none;
+      display: inline-block;
+      margin-right: 1rem;
+    }
+
+    .btn-primary {
+      background-color: #00bfa5;
+      color: white;
+    }
+
+    .btn-secondary {
+      background-color: #6c757d;
+      color: white;
+    }
+
+    .btn-danger {
+      background-color: #ef5350;
+      color: white;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+    }
+
+    /* Vehicle Info */
+    .vehicle-info {
+      background: #e8f5e8;
+      padding: 1rem;
+      border-radius: 4px;
+      margin-bottom: 2rem;
+      border-left: 4px solid #00695c;
+    }
+
+    .vehicle-info h4 {
+      margin: 0 0 0.5rem 0;
+      color: #00695c;
+    }
+
+    .vehicle-info p {
+      margin: 0.25rem 0;
+      color: #555;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .admin-main {
+        margin-left: 0;
+        padding: 1rem;
+      }
+
+      .admin-sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        padding-top: 0;
+      }
+
+      .admin-header {
+        position: relative;
+      }
+
+      .edit-form {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="admin-header">
+    <h1>NaiSmart Admin</h1>
+    <div class="admin-profile">
+      <span>Admin</span>
+      <a href="/logout">Logout</a>
+    </div>
+  </header>
+
+  <!-- Sidebar -->
+  <aside class="admin-sidebar">
+    <ul>
+      <li><a href="{{ url_for('admin_dashboard') }}">Dashboard</a></li>
+      <li><a href="{{ url_for('manage_routes') }}">Manage Routes</a></li>
+      <li><a href="{{ url_for('fleet_management') }}" class="active">Vehicle Management</a></li>
+      <li><a href="{{ url_for('route_assignment') }}">Driver-Route Assignment</a></li>
+      <li><a href="{{ url_for('vehicle_route_assignment') }}">Vehicle-Route Assignment</a></li>
+      <li><a href="{{ url_for('fare_records') }}">Fare Records</a></li>
+      <li><a href="{{ url_for('sacco_members') }}">SACCO Members</a></li>
+      <li><a href="{{ url_for('staff_management') }}">Staff</a></li>
+      <li><a href="{{ url_for('reports') }}">Reports</a></li>
+    </ul>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="admin-main">
+    <h2>Edit Vehicle</h2>
+    
+    <section class="admin-section">
+      <!-- Vehicle Info -->
+      <div class="vehicle-info">
+        <h4>Current Vehicle Details</h4>
+        <p><strong>Plate Number:</strong> {{ vehicle.plate_number }}</p>
+        <p><strong>Model:</strong> {{ vehicle.vehicle_model }}</p>
+        <p><strong>Capacity:</strong> {{ vehicle.capacity }} passengers</p>
+        <p><strong>Created:</strong> {{ vehicle.created_at.strftime('%Y-%m-%d %H:%M') if vehicle.created_at else "N/A" }}</p>
+        <p><strong>Last Updated:</strong> {{ vehicle.updated_at.strftime('%Y-%m-%d %H:%M') if vehicle.updated_at else "N/A" }}</p>
+      </div>
+
+      <!-- Edit Form -->
+      <form class="edit-form" method="POST">
+        <div class="form-group">
+          <label for="plate_number">Plate Number</label>
+          <input type="text" name="plate_number" id="plate_number" value="{{ vehicle.plate_number }}" required>
+        </div>
+
+        <div class="form-group">
+          <label for="vehicle_model">Vehicle Model</label>
+          <input type="text" name="vehicle_model" id="vehicle_model" value="{{ vehicle.vehicle_model }}" required>
+        </div>
+
+        <div class="form-group">
+          <label for="assigned_route">Assigned Route (Optional)</label>
+          <input type="text" name="assigned_route" id="assigned_route" value="{{ vehicle.assigned_route or '' }}">
+        </div>
+
+        <div class="form-group">
+          <label for="status">Status</label>
+          <select name="status" id="status" required>
+            <option value="active" {% if vehicle.status == 'active' %}selected{% endif %}>Active</option>
+            <option value="inactive" {% if vehicle.status == 'inactive' %}selected{% endif %}>Inactive</option>
+            <option value="maintenance" {% if vehicle.status == 'maintenance' %}selected{% endif %}>Under Maintenance</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary">Update Vehicle</button>
+          <a href="{{ url_for('fleet_management') }}" class="btn btn-secondary">Cancel</a>
+          <button type="button" class="btn btn-danger" onclick="deleteVehicle({{ vehicle.id }}, '{{ vehicle.plate_number }}')">Delete Vehicle</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    function deleteVehicle(vehicleId, plateNumber) {
+      if (confirm(`Are you sure you want to delete vehicle ${plateNumber}? This action cannot be undone.`)) {
+        // Send delete request
+        window.location.href = `/admin/vehicle/delete/${vehicleId}`;
+      }
+    }
+  </script>
+  <script src="{{ url_for('static', filename='js/dark-mode.js') }}"></script>
+</body>
+</html>

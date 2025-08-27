@@ -6,26 +6,6 @@
   <title>SACCO Members - NaiSmart Admin</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='styles/dark-mode.css') }}">
-  <style>
-    /* Action Buttons */
-    .edit-btn, .delete-btn {
-      padding: 0.4rem 0.8rem;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-right: 0.5rem;
-    }
-    
-    .edit-btn {
-      background-color: #42a5f5;
-      color: white;
-    }
-    
-    .delete-btn {
-      background-color: #ef5350;
-      color: white;
-    }
-  </style>
 </head>
 <body>
   <!-- Header -->
@@ -102,18 +82,6 @@
     function toggleForm() {
       const form = document.getElementById('addMemberForm');
       form.style.display = form.style.display === 'none' ? 'block' : 'none';
-    }
-
-    function editMember(memberId) {
-      // Redirect to edit page (to be implemented)
-      window.location.href = `/admin/sacco-members/edit/${memberId}`;
-    }
-
-    function deleteMember(memberId) {
-      if (confirm('Are you sure you want to delete this SACCO member? This action cannot be undone.')) {
-        // Send delete request (to be implemented)
-        window.location.href = `/admin/sacco-members/delete/${memberId}`;
-      }
     }
   </script>
   <script src="{{ url_for('static', filename='js/dark-mode.js') }}"></script>
